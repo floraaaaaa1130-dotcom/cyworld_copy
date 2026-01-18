@@ -177,7 +177,7 @@ input.comment-input {
 <audio id="bgm" loop></audio>
 
 <script>
-/* ===== 탭 전환 ===== */
+/* ===== 1. 탭 전환 기능 ===== */
 function showTab(name){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   event.target.classList.add('active');
@@ -185,191 +185,231 @@ function showTab(name){
   document.getElementById('photos').style.display = name==='photos'?'block':'none';
 }
 
-/* ===== 사진 데이터 (직접 입력 모드) ===== */
-const photos = [
+/* ===== 2. 성격별 말투 (MBTI 반영) ===== */
+const replyTemplates = {
+  // 1. ISFP (원빈, 리쿠): 수줍음, 낯가림, 소심한 귀여움, 이모티콘 남발
+  isfp: {
+    normal: ["아.. 안녕? ㅎㅎ", "왔구나.. (수줍)", "글 남겨줘서 고마워..///"],
+    love: ["어? 어.. (동공지진)", "그런 말 하면.. 부끄러운데..", "얼굴 빨개졌어.. 책임져.."],
+    sad: ["무슨 일 있어? ㅠㅠ", "울지 마.. 나도 슬퍼져..", "토닥토닥.. (조심스럽게)"],
+    scrap: ["가져가도 돼.. ㅎㅎ", "저기.. 댓글은 남겨줄 거지..?", "예쁘게 써줘.."],
+    ilchon: ["우리가.. 일촌..? ///", "받아줄게.. 친하게 지내자..", "부끄럽지만 좋아.."]
+  },
+
+  // 2. ENTP (준혁): 자신감 뿜뿜, 인싸, 유머러스, 직설적
+  entp: {
+    normal: ["오 왔냐?! 환영한다 ㅋㅋㅋ", "내가 좀 쩔지?", "심심했는데 잘 왔다 ㅋㅋ"],
+    love: ["나 인기 많은 거 알지? 줄 서라 ㅋㅋ", "역시는 역시네 사람 볼 줄 아네", "반했냐? ㅋㅋㅋ"],
+    sad: ["야 누가 괴롭힘? 이름 대라", "술 한잔 고? 내가 쏜다", "훌훌 털어버려 인생 뭐 있냐!"],
+    scrap: ["널리 널리 퍼가라~", "역시 보는 눈이 있네", "출처는 '백준혁' 크게 박아라 ㅋㅋ"],
+    ilchon: ["당연히 콜이지!", "오늘부터 베프 고고?", "일촌명은 '준혁이꼬봉' 어때? 농담 ㅋ"]
+  },
+
+  // 3. ISTP_SOHEE (소희): 낯가림(단답) -> 친해지면 장난, 귀여운 인싸
+  istp_sohee: {
+    normal: ["ㅎㅇ", "왔어?", "글 확인했음", "자주 오네? ㅋㅋ"],
+    love: ["ㅋㅋㅋ 뭐래", "갑자기?", "나 좀 낯가려.. 하지 마 ㅋㅋ", "너 좀 웃기네?"],
+    sad: ["왜 그래", "맛있는 거 먹으러 갈래?", "기운 내라"],
+    scrap: ["퍼가", "ㅇㅇ 가져가", "댓글은 쓰고 가라"],
+    ilchon: ["음.. 생각 좀 해보고", "친해지면 받아줌", "일단 신청해 놔 ㅋㅋ"]
+  },
+
+  // 4. COOL_PLAYFUL (건호): 쿨함, 털털, 츤데레, 장난기 가득
+  cool_playful: {
+    normal: ["안녕~ 근데 빈손이야?", "왔으면 발도장 꾹! ㅋㅋ", "ㅋㅋㅋ 반갑다"],
+    love: ["오~ 감당 가능? ㅋㅋ", "장난치지 마라~ 설렌다?", "ㅋㅋㅋ 귀엽네 이거"],
+    sad: ["에이 왜 우울해~ 웃자", "무슨 일인데? 들어는 줄게", "심각해지지 말자~"],
+    scrap: ["댓글 안 쓰고 가져가면 쫓아감", "퍼가요~♡ (내가 씀)", "가져가라 가져가~"],
+    ilchon: ["일촌? 맛있는 거 사주면 ㅋㅋ", "콜! 대신 자주 와라", "일촌명 웃기게 지어오면 수락함"]
+  },
+
+  // 5. INTJ (시온): 차분, 철벽, 꼼꼼함 -> 가끔 터지는 반전 애교
+  intj: {
+    normal: ["반갑습니다.", "글 확인했습니다.", "정리 정돈 중입니다.", "규칙을 지켜주세요."],
+    love: ["흠.. 싫지는 않네요.", "저 사실 애교 많아요.. (부끄)", "뿌잉.. 헉 잊으세요.", "당황스럽네요;;"],
+    sad: ["이성적으로 생각합시다.", "해결책을 찾아볼까요?", "그래도.. 힘내세요 (어색)"],
+    scrap: ["출처 명시 바랍니다.", "깔끔하게 퍼가세요.", "불펌은 사양합니다."],
+    ilchon: ["검토해보겠습니다.", "신뢰가 쌓이면 수락합니다.", "저랑 잘 맞으실까요?"]
+  },
+
+  // 6. ISTP_EUNSEOK (은석): 조용한 개그(아재개그), 엉뚱, 무심한 듯 부끄러움
+  istp_eunseok: {
+    normal: ["돌멩이 어서오고", "왕이 넘어지면? 킹콩 ㅋㅋ", "조용히 왔다 가라"],
+    love: ["너 나 좋아하냐? 보는 눈은 있어가지고", "부끄럽게 왜 이래.. (귀 빨개짐)", "칭찬 알러지 있음.."],
+    sad: ["울면 산타 할아버지가 선물 안 준대", "뚝 그쳐라", "바나나 먹으면 나한테 반하나? ㅋㅋ(위로임)"],
+    scrap: ["퍼가요~ 물은 셀프요~", "불펌하면 내 꿈 꿔라", "가져가든지 (신경 안 씀)"],
+    ilchon: ["일촌? 이촌은 안 되나 ㅋㅋ", "은석이랑 금석이랑.. 미안", "받아줄게"]
+  }
+};
+
+/* ===== 3. 멤버별 데이터 설정 ===== */
+const members = [
   {
-    img: "https://via.placeholder.com/400x250?text=CYWORLD+1",
-    text: "난... ㄱr끔... 눈물을 흘린ㄷr....\nㄱr끔은 눈물을 참을 수 없는 내가 별루ㄷr...☆",
-    hearts: 3382,
-    comments: []
+    name: "박원빈",
+    img: "https://via.placeholder.com/150/ffd1dc?text=Wonbin",
+    bgm: { title: "RIIZE - Love 119", src: "bgm_wonbin.mp3" },
+    replies: replyTemplates.isfp, // ★ ISFP 연결
+    photos: [ /* 원빈 사진 데이터... */ ]
   },
   {
-    img: "https://via.placeholder.com/400x250?text=Trip+2005",
-    text: "지난 여름 부산 여행!!!\n회도 먹고 바다도 보고 좋았음 ㅋㅋ\n(퍼가실땐 댓글 필수인거 아시죠?)",
-    hearts: 3452,
-    comments: []
+    name: "리쿠",
+    img: "https://via.placeholder.com/150/add8e6?text=Riku",
+    bgm: { title: "NCT WISH - SAIL AWAY", src: "bgm_riku.mp3" },
+    replies: replyTemplates.isfp, // ★ ISFP 연결
+    photos: [ /* 리쿠 사진 데이터... */ ]
   },
   {
-    img: "https://via.placeholder.com/400x250?text=School+Life",
-    text: "야자 째고 떡볶이 먹으러 갈 사람? \n선착순 3명 ㅋㅋㅋ -_-v",
-    hearts: 1153,
-    comments: []
+    name: "백준혁",
+    img: "https://via.placeholder.com/150/f08080?text=Junhyeok",
+    bgm: { title: "ID:Earth - Betelgeuse", src: "bgm_jun.mp3" },
+    replies: replyTemplates.entp, // ★ ENTP 연결
+    photos: [ /* 준혁 사진 데이터... */ ]
   },
   {
-    img: "https://via.placeholder.com/400x250?text=Gift",
-    text: "생일 선물 고마워!! 잘 쓸게~ \n완전 감동 ㅠㅠ",
-    hearts: 4532,
-    comments: []
+    name: "이소희",
+    img: "https://via.placeholder.com/150/ffefd5?text=Sohee",
+    bgm: { title: "RIIZE - Get A Guitar", src: "bgm_sohee.mp3" },
+    replies: replyTemplates.istp_sohee, // ★ 소희 전용 ISTP
+    photos: [ /* 소희 사진 데이터... */ ]
+  },
+  {
+    name: "안건호",
+    img: "https://via.placeholder.com/150/afeeee?text=Geonho",
+    bgm: { title: "Kortis - Timeless", src: "bgm_geon.mp3" },
+    replies: replyTemplates.cool_playful, // ★ 쿨함/장난
+    photos: [ /* 건호 사진 데이터... */ ]
+  },
+  {
+    name: "오시온",
+    img: "https://via.placeholder.com/150/e6e6fa?text=Sion",
+    bgm: { title: "NCT WISH - WISH", src: "bgm_sion.mp3" },
+    replies: replyTemplates.intj, // ★ INTJ 반전매력
+    photos: [ /* 시온 사진 데이터... */ ]
+  },
+  {
+    name: "송은석",
+    img: "https://via.placeholder.com/150/d0f0c0?text=Eunseok",
+    bgm: { title: "RIIZE - Memories", src: "bgm_eunseok.mp3" },
+    replies: replyTemplates.istp_eunseok, // ★ 은석 전용 아재개그 ISTP
+    photos: [ /* 은석 사진 데이터... */ ]
+  },
+  {
+    name: "주훈", // 주훈 님 성격은 위 목록 중 가장 비슷한 걸로 연결 (일단 소희타입으로 예시)
+    img: "https://via.placeholder.com/150/fffacd?text=Joohun",
+    bgm: { title: "Kortis - Coward", src: "bgm_joo.mp3" },
+    replies: replyTemplates.istp_sohee, 
+    photos: [ /* 주훈 사진 데이터... */ ]
   }
 ];
 
+// 현재 접속한 멤버 랜덤 선택
+const currentMember = members[Math.floor(Math.random() * members.length)];
+const currentMood = Math.random() > 0.5 ? 'cool' : 'sweet'; // 기분 랜덤
+
+/* ===== 4. 초기화 및 사진첩 생성 함수 ===== */
+window.onload = () => {
+  // 1) 프로필 세팅
+  document.getElementById("profile-img").src = currentMember.img;
+  document.getElementById("member-name").innerText = currentMember.name + " 미니홈피";
+  
+  // 2) BGM 세팅 (marquee 효과)
+  const bgm = document.getElementById("bgm");
+  bgm.src = currentMember.bgm.src;
+  document.getElementById("bgm-title").innerHTML = 
+    "<marquee scrollamount='3'>🎵 BGM: " + currentMember.bgm.title + "</marquee>";
+
+  // 3) 사진첩 생성 (★중요: 여기서 멤버별 사진을 가져옴)
+  renderPhotos(currentMember.photos);
+};
+
+/* 사진첩 그리는 함수 */
+function renderPhotos(photoList) {
   const photoWrap = document.getElementById('photos');
-  
-photos.forEach((p,idx)=>{
-  const el=document.createElement('div');
-  el.className='photo-post';
-  el.innerHTML=`
-    <img src="${p.img}">
-    <p>${p.text}</p>
-    <span class="heart" onclick="toggleHeart(this,${idx})">♥</span>
-    <span id="heart-${idx}">${p.hearts}</span>
-    <div class="comments" id="comments-${idx}"></div>
-    <input class="comment-input" placeholder="댓글 남기기"
-      onkeydown="if(event.key==='Enter') addComment(${idx},this)">
-  `;
-  photoWrap.appendChild(el);
-});
+  photoWrap.innerHTML = ""; // 기존 내용 초기화
 
-function toggleHeart(el,idx){
+  if(!photoList || photoList.length === 0) {
+    photoWrap.innerHTML = "<p style='padding:20px; text-align:center;'>아직 사진이 없어요...</p>";
+    return;
+  }
+
+  photoList.forEach((p, idx) => {
+    const el = document.createElement('div');
+    el.className = 'photo-post';
+    el.innerHTML = `
+      <img src="${p.img}">
+      <p>${p.text.replace(/\n/g, '<br>')}</p>
+      <span class="heart" onclick="toggleHeart(this, ${idx})">♥</span>
+      <span id="heart-${idx}">${p.hearts}</span>
+      <div class="comments" id="comments-${idx}"></div>
+      <input class="comment-input" placeholder="댓글 남기기"
+        onkeydown="if(event.key==='Enter') addComment(${idx},this)">
+    `;
+    photoWrap.appendChild(el);
+  });
+}
+
+/* 하트 클릭 기능 */
+function toggleHeart(el, idx) {
   el.classList.toggle('active');
-  photos[idx].hearts += el.classList.contains('active')?1:-1;
-  document.getElementById(`heart-${idx}`).innerText = photos[idx].hearts;
+  // 화면상에서만 숫자 바뀜 (새로고침하면 초기화됨)
+  let countSpan = document.getElementById(`heart-${idx}`);
+  let currentVal = parseInt(countSpan.innerText);
+  countSpan.innerText = el.classList.contains('active') ? currentVal + 1 : currentVal - 1;
 }
-function addComment(idx,input){
-  if(!input.value.trim())return;
-  const c=document.createElement('div');
-  c.className='comment';
-  c.innerText='익명: '+input.value;
+
+/* 댓글 기능 */
+const prefixes = ["★베프★", "내사랑", "ㅇㅇㅈjang", "겸둥이", "단짝", "팬1호"];
+function addComment(idx, input) {
+  if (!input.value.trim()) return;
+  const randomPrefix = prefixes[Math.floor(Math.random() * prefixes.length)];
+  const c = document.createElement('div');
+  c.className = 'comment';
+  c.innerHTML = `<b>${randomPrefix} 익명:</b> ${input.value}`;
   document.getElementById(`comments-${idx}`).appendChild(c);
-  input.value='';
+  input.value = '';
 }
-  
-    const members = [
-      {
-        name: "민우",
-        img: "https://via.placeholder.com/150/ffd6d6",
-        bgm: { title: "버즈 - 겁쟁이", src: "bgm_minwoo.mp3" },
-        replies: {
-          cool: {
-            normal: ["흔적은 확인함", "보고 그냥 지나칠 뻔"],
-            love: ["그런 말 쉽게 하지 마", "방명록 너무 과감함"]
-          },
-          sweet: {
-            normal: ["와줘서 고마워", "오늘 기분 좋아짐"],
-            love: ["그렇게 말하면 설레잖아", "심장 아픔"]
-          },
-          pissy: {
-            normal: ["봤거든", "지금 기분 별로"],
-            love: ["지금 이런 말 할 타이밍 아님"]
-          },
-          rumor: [
-            "그런 얘기 어디서 들은 거야?",
-            "확인 안 된 말 싫어함"
-          ]
-        }
-      },
-      {
-        name: "지훈",
-        img: "https://via.placeholder.com/150/d6eaff",
-        bgm: { title: "성시경 - 거리에서", src: "bgm_jihun.mp3" },
-        replies: {
-          cool: {
-            normal: ["흔적 남긴 거 봤어"],
-            love: ["갑자기 그런 말 하면 곤란해"]
-          },
-          sweet: {
-            normal: ["와줘서 고마워!", "기분 좋아졌어"],
-            love: ["그렇게 말하면 반칙이야"]
-          },
-          pissy: {
-            normal: ["지금 답글 달 기분 아님"],
-            love: ["그만해"]
-          },
-          rumor: [
-            "그 얘기 여기서 하지 마",
-            "소문 퍼뜨리는 거 별로야"
-          ]
-        }
-      }
-    ];
 
-    const moods = ["cool", "sweet", "pissy"];
-    const silentChance = { cool: 0.05, sweet: 0, pissy: 0.4 };
+/* 방명록 기능 (간소화) */
+function postMsg() {
+  const msgInput = document.getElementById("user-msg");
+  const userMsg = msgInput.value.trim();
+  if (!userMsg) return;
 
-    const currentMember = members[Math.floor(Math.random() * members.length)];
-    const currentMood = moods[Math.floor(Math.random() * moods.length)];
+  const list = document.getElementById("guestbook-list");
+  const entry = document.createElement("div");
+  entry.className = "guestbook-entry";
+  const id = "r-" + Date.now();
 
-    /* ===== 페이지 로드시 세팅 ===== */
-    window.onload = () => {
-      document.getElementById("profile-img").src = currentMember.img;
-      document.getElementById("member-name").innerText =
-        currentMember.name + " 미니홈피";
+  entry.innerHTML = `<b>익명:</b> ${userMsg}<div class="ai-reply" id="${id}">...</div>`;
+  list.prepend(entry);
+  msgInput.value = "";
 
-      const bgm = document.getElementById("bgm");
-      bgm.src = currentMember.bgm.src;
-document.getElementById("bgm-title").innerHTML = 
-  "<marquee scrollamount='3'>。˚＊。˚☆ ── 🎵 BGM: " + currentMember.bgm.title + " ── ☆。˚＊。˚ </marquee>";
-    };
+  setTimeout(() => {
+    // 답장 선택 로직 (간단 버전)
+    let type = "normal";
+    if(userMsg.includes("퍼가")) type="scrap";
+    else if(userMsg.includes("사랑")||userMsg.includes("좋아")) type="love";
+    else if(userMsg.includes("힘들")||userMsg.includes("ㅠㅠ")) type="sad";
+    
+    // 안전하게 답장 가져오기
+    const replyPool = currentMember.replies[currentMood] || currentMember.replies['cool']; 
+    const replies = replyPool[type] || replyPool['normal'];
+    const reply = replies[Math.floor(Math.random() * replies.length)];
+    
+    document.getElementById(id).innerText = `ㄴ ${currentMember.name}: ${reply}`;
+  }, 1000);
+}
 
-    /* ===== 질문 분류 ===== */
-    function classifyMessage(msg) {
-      const t = msg.replace(/\s/g, "");
-      if (t.includes("사귀") || t.includes("누구랑") || t.includes("소문")) return "rumor";
-      if (t.includes("좋아") || t.includes("사랑")) return "love";
-      if (t.includes("뭐해") || t.includes("모해")) return "normal";
-      return "normal";
-    }
+/* 첫 클릭 시 BGM 재생 */
+window.addEventListener("click", () => {
+  const bgm = document.getElementById("bgm");
+  if (bgm.paused) { bgm.volume = 0.5; bgm.play(); }
+}, { once: true });
 
-    function pickReply(msg) {
-      const type = classifyMessage(msg);
-      if (type === "rumor") return currentMember.replies.rumor;
-      return currentMember.replies[currentMood][type];
-    }
-
-    /* ===== 방명록 ===== */
-    function postMsg() {
-      const msgInput = document.getElementById("user-msg");
-      const list = document.getElementById("guestbook-list");
-      const userMsg = msgInput.value.trim();
-      if (!userMsg) return;
-
-      const entry = document.createElement("div");
-      entry.className = "guestbook-entry";
-      const id = "r-" + Date.now();
-
-      entry.innerHTML = `
-        <b>익명:</b> ${userMsg}
-        <div class="ai-reply" id="${id}">...</div>
-      `;
-      list.prepend(entry);
-      msgInput.value = "";
-
-      setTimeout(() => {
-        // 😶‍🌫️ 완전 읽씹
-        if (Math.random() < silentChance[currentMood]) {
-          const el = document.getElementById(id);
-          if (el) el.remove();
-          return;
-        }
-
-        const pool = pickReply(userMsg);
-        const reply = pool[Math.floor(Math.random() * pool.length)];
-        document.getElementById(id).innerText =
-          `ㄴ ${currentMember.name}: ` + reply;
-      }, 800 + Math.random() * 1200);
-    }
-
-    /* ===== 첫 클릭 시 BGM 재생 ===== */
-    window.addEventListener("click", () => {
-      const bgm = document.getElementById("bgm");
-      if (bgm.paused) {
-        bgm.volume = 0.5;
-        bgm.play();
-      }
-    }, { once: true });
-  </script>
+</script>
 </body>
 </html>
+
 
 
 
