@@ -67,14 +67,33 @@ body {
 
 /* ===== 방명록 ===== */
 .guestbook-entry {
-  background:var(--bg-gray);
+  background:#f6f6f6;
   padding:10px;
   margin-bottom:12px;
+  border-radius:5px;
 }
 .ai-reply {
-  color:var(--cy-orange);
-  border-top:1px dotted #ccc;
+  color:#ff6600;
   margin-top:6px;
+  border-top:1px dotted #ccc;
+  padding-top:4px;
+}
+  
+.input-area {
+  margin-top:10px;
+  border-top:2px solid #8cc6d1;
+  padding-top:8px;
+}
+
+textarea {
+  width:96%;
+  height:40px;
+}
+
+button {
+  float:right;
+  margin-top:6px;
+  cursor:pointer;
 }
 
 /* ===== 사진첩 ===== */
@@ -317,4 +336,5 @@ function addComment(idx,input){
   </script>
 </body>
 </html>
+
 
