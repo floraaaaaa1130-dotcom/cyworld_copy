@@ -662,9 +662,9 @@ function postMsg() {
 
     // 4. 일반 분류
     let type = "normal";
-    if (text.includes("소문") || text.includes("들었어") || text.includes("봤어") || text.includes("목격")) type = "rumor";
-    else if (text.includes("친구") || text.includes("친해") || text.includes("베프") || text.includes("일촌") || text.includes("우정") || text.includes("번호")) type = "friend";
-    else if (text.includes("사랑") || text.includes("좋아") || text.includes("설레") || text.includes("내꺼") || text.includes("결혼")) type = "love";
+    if (text.includes("소문") || text.includes("들었어") || text.includes("봤어") || text.includes("진짜야")) type = "rumor";
+    else if (text.includes("친구") || text.includes("친해") || text.includes("베프") || text.includes("일촌") || text.includes("연락") || text.includes("놀자")) type = "friend";
+    else if (text.includes("사랑") || text.includes("좋아") || text.includes("사귀자") || text.includes("내꺼") || text.includes("결혼")) type = "love";
     else if (text.includes("힘들") || text.includes("슬퍼") || text.includes("우울") || text.includes("눈물")) type = "sad";
 
     const replyPool = currentMember.replies[type] || currentMember.replies['normal'];
@@ -681,4 +681,5 @@ window.addEventListener("click", () => {
 </script>
 </body>
 </html>
+
 
