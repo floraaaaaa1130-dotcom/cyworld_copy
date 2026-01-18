@@ -1,231 +1,195 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>☆-..- 2005년의 어느 날 -..-☆</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>☆-..- 2005년의 어느 날 -..-☆</title>
 
-  <style>
-    @font-face {
-      font-family: 'GalmuriCondensed';
-      src: url('fonts/GalmuriCondensed.woff2') format('woff2');
-    }
+<style>
+@font-face {
+  font-family: 'GalmuriCondensed';
+  src: url('fonts/GalmuriCondensed.woff2') format('woff2');
+}
+* {
+  font-family: 'GalmuriCondensed', monospace;
+  box-sizing: border-box;
+}
+:root {
+  --main-blue:#8cc6d1; --bg-gray:#f6f6f6;
+  --cy-orange:#ff6600; --cy-blue:#3b5998;
+}
+body {
+  background:#b1b1b1; display:flex; justify-content:center;
+  padding-top:40px; margin:0;
+}
+.wrapper {
+  background:var(--main-blue);
+  padding:25px 15px 15px 25px;
+  border-radius:10px;
+  width:850px; height:550px;
+}
+.white-box {
+  background:white; border-radius:8px;
+  height:100%; display:flex; padding:15px;
+}
+.profile {
+  width:28%; border-right:1px dashed #ccc;
+  padding-right:15px; text-align:center;
+}
+.profile-img { width:100%; margin-bottom:10px; }
 
-    * {
-      font-family: 'GalmuriCondensed', monospace;
-      box-sizing: border-box;
-    }
+.main-content {
+  width:72%; padding-left:20px;
+  display:flex; flex-direction:column;
+}
 
-    :root {
-      --main-blue: #8cc6d1;
-      --bg-gray: #f6f6f6;
-      --cy-orange: #ff6600;
-      --cy-blue: #3b5998;
-    }
+/* ===== 탭 ===== */
+.tabs {
+  display:flex; gap:10px; margin-bottom:10px;
+}
+.tab {
+  cursor:pointer;
+  padding:4px 8px;
+  border:1px solid #ccc;
+  background:#f5f5f5;
+}
+.tab.active {
+  background:white;
+  border-bottom:2px solid var(--cy-orange);
+  font-weight:bold;
+}
 
-    body {
-      background-color: #b1b1b1;
-      display: flex;
-      justify-content: center;
-      padding-top: 40px;
-      margin: 0;
-      font-size: 14px;
-    }
+/* ===== 공통 스크롤 영역 ===== */
+.content-area {
+  flex-grow:1;
+  overflow-y:auto;
+}
 
-    .wrapper {
-      background-color: var(--main-blue);
-      padding: 25px 15px 15px 25px;
-      border-radius: 10px;
-      width: 850px;
-      height: 550px;
-      border: 1px solid #777;
-    }
+/* ===== 방명록 ===== */
+.guestbook-entry {
+  background:var(--bg-gray);
+  padding:10px;
+  margin-bottom:12px;
+}
+.ai-reply {
+  color:var(--cy-orange);
+  border-top:1px dotted #ccc;
+  margin-top:6px;
+}
 
-    .white-box {
-      background: white;
-      border: 1px solid #777;
-      border-radius: 8px;
-      height: 100%;
-      display: flex;
-      padding: 15px;
-    }
-
-    /* ===== 왼쪽 ===== */
-    .profile {
-      width: 28%;
-      border-right: 1px dashed #ccc;
-      padding-right: 15px;
-      text-align: center;
-      font-size: 13px;
-    }
-
-    .profile-img {
-      width: 100%;
-      border: 1px solid #ddd;
-      margin-bottom: 10px;
-    }
-
-    .today-is {
-      color: var(--cy-orange);
-      font-weight: bold;
-      display: block;
-    }
-
-    #bgm-title {
-      font-size: 11px;
-      color: #666;
-      margin-top: 6px;
-    }
-
-    /* ===== 오른쪽 ===== */
-    .main-content {
-      width: 72%;
-      padding-left: 20px;
-      display: flex;
-      flex-direction: column;
-    }
-
-    /* 🔹 탭 */
-    .tabs {
-      margin-bottom: 10px;
-    }
-
-    .tab-btn {
-      background: #eee;
-      border: 1px solid #999;
-      padding: 4px 10px;
-      margin-right: 5px;
-      cursor: pointer;
-      font-size: 13px;
-    }
-
-    .tab-btn.active {
-      background: white;
-      border-bottom: 1px solid white;
-      font-weight: bold;
-      color: var(--cy-blue);
-    }
-
-    .tab-content {
-      flex-grow: 1;
-      overflow-y: auto;
-      display: none;
-    }
-
-    .tab-content.active {
-      display: block;
-    }
-
-    /* ===== 방명록 ===== */
-    #guestbook-list {
-      flex-grow: 1;
-    }
-
-    .guestbook-entry {
-      background: var(--bg-gray);
-      padding: 12px;
-      margin-bottom: 15px;
-      border-radius: 5px;
-    }
-
-    .ai-reply {
-      color: var(--cy-orange);
-      margin-top: 8px;
-      border-top: 1px dotted #ccc;
-      padding-top: 6px;
-      font-weight: bold;
-    }
-
-    .input-area {
-      margin-top: 10px;
-      background: #f9f9f9;
-      padding: 10px;
-      border-top: 2px solid var(--main-blue);
-    }
-
-    textarea {
-      width: 96%;
-      height: 40px;
-    }
-
-    button {
-      float: right;
-      margin-top: 6px;
-    }
-
-    /* ===== 사진첩 ===== */
-    .album-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-    }
-
-    .album-grid img {
-      width: 100%;
-      border: 1px solid #ccc;
-      background: #eee;
-    }
-  </style>
+/* ===== 사진첩 ===== */
+.photo-post {
+  background:var(--bg-gray);
+  padding:10px;
+  margin-bottom:15px;
+}
+.photo-post img {
+  width:100%; margin-bottom:8px;
+}
+.heart {
+  cursor:pointer;
+  color:#999;
+  margin-right:8px;
+}
+.heart.active { color:red; }
+.comments {
+  margin-top:8px;
+  font-size:13px;
+}
+.comment {
+  border-top:1px dotted #ccc;
+  padding-top:4px;
+}
+input.comment-input {
+  width:100%;
+  margin-top:6px;
+}
+</style>
 </head>
 
 <body>
 <div class="wrapper">
-  <div class="white-box">
+<div class="white-box">
 
-    <!-- 왼쪽 -->
-    <div class="profile">
-      <span class="today-is">TODAY IS... ♥</span>
-      <img id="profile-img" class="profile-img">
-      <p id="member-name"></p>
-      <p id="bgm-title">🎵 BGM:</p>
-    </div>
+<!-- 왼쪽 -->
+<div class="profile">
+  <img id="profile-img" class="profile-img">
+  <p id="member-name"></p>
+  <p id="bgm-title"></p>
+</div>
 
-    <!-- 오른쪽 -->
-    <div class="main-content">
+<!-- 오른쪽 -->
+<div class="main-content">
 
-      <!-- 🔹 탭 버튼 -->
-      <div class="tabs">
-        <button class="tab-btn active" onclick="openTab('guestbook')">방명록</button>
-        <button class="tab-btn" onclick="openTab('album')">사진첩</button>
-      </div>
+<!-- 탭 -->
+<div class="tabs">
+  <div class="tab active" onclick="showTab('guestbook')">방명록</div>
+  <div class="tab" onclick="showTab('photos')">사진첩</div>
+</div>
 
-      <!-- 방명록 -->
-      <div id="guestbook" class="tab-content active">
-        <div id="guestbook-list"></div>
+<!-- 방명록 -->
+<div id="guestbook" class="content-area">
+  <div id="guestbook-list"></div>
+  <textarea id="user-msg" placeholder="일촌 신청하고 가세효..."></textarea>
+  <button onclick="postMsg()">확인</button>
+</div>
 
-        <div class="input-area">
-          <textarea id="user-msg" placeholder="일촌 신청하고 가세효..."></textarea>
-          <button onclick="postMsg()">확인</button>
-        </div>
-      </div>
+<!-- 사진첩 -->
+<div id="photos" class="content-area" style="display:none;"></div>
 
-      <!-- 사진첩 -->
-      <div id="album" class="tab-content">
-        <div class="album-grid">
-          <img src="https://via.placeholder.com/200">
-          <img src="https://via.placeholder.com/200">
-          <img src="https://via.placeholder.com/200">
-          <img src="https://via.placeholder.com/200">
-          <img src="https://via.placeholder.com/200">
-          <img src="https://via.placeholder.com/200">
-        </div>
-      </div>
-
-    </div>
-  </div>
+</div>
+</div>
 </div>
 
 <audio id="bgm" loop></audio>
 
 <script>
-  /* ===== 탭 전환 (기존 기능 무관) ===== */
-  function openTab(id) {
-    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+/* ===== 탭 전환 ===== */
+function showTab(name){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('guestbook').style.display = name==='guestbook'?'block':'none';
+  document.getElementById('photos').style.display = name==='photos'?'block':'none';
+}
 
-    document.getElementById(id).classList.add('active');
-    event.target.classList.add('active');
-  }
+/* ===== 사진 데이터 ===== */
+const photos = Array.from({length:6}).map((_,i)=>({
+  img:`https://via.placeholder.com/400x250?text=PHOTO+${i+1}`,
+  text:`그날의 기록 ${i+1}`,
+  hearts:0,
+  comments:[]
+}));
+
+const photoWrap = document.getElementById('photos');
+
+photos.forEach((p,idx)=>{
+  const el=document.createElement('div');
+  el.className='photo-post';
+  el.innerHTML=`
+    <img src="${p.img}">
+    <p>${p.text}</p>
+    <span class="heart" onclick="toggleHeart(this,${idx})">♥</span>
+    <span id="heart-${idx}">0</span>
+    <div class="comments" id="comments-${idx}"></div>
+    <input class="comment-input" placeholder="댓글 남기기"
+      onkeydown="if(event.key==='Enter') addComment(${idx},this)">
+  `;
+  photoWrap.appendChild(el);
+});
+
+function toggleHeart(el,idx){
+  el.classList.toggle('active');
+  photos[idx].hearts += el.classList.contains('active')?1:-1;
+  document.getElementById(`heart-${idx}`).innerText = photos[idx].hearts;
+}
+function addComment(idx,input){
+  if(!input.value.trim())return;
+  const c=document.createElement('div');
+  c.className='comment';
+  c.innerText='익명: '+input.value;
+  document.getElementById(`comments-${idx}`).appendChild(c);
+  input.value='';
+}
   
     const members = [
       {
@@ -353,3 +317,4 @@
   </script>
 </body>
 </html>
+
