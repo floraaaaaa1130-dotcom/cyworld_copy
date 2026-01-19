@@ -42,6 +42,8 @@ body {
   position: relative;
   flex-shrink: 0; 
   transform-origin: top center;
+  /* 처음에는 숨겨둠 (인트로 팝업 후 등장) */
+  visibility: hidden; 
 }
 
 .white-box {
@@ -169,6 +171,29 @@ body {
   height: 100%;    
 }
 
+/* ★ 홈 탭 스타일 ★ */
+.home-content {
+  padding: 10px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #444;
+  overflow-y: auto;
+}
+.home-section {
+  margin-bottom: 20px;
+  background: #fcfcfc;
+  border: 1px dashed #ccc;
+  padding: 10px;
+  border-radius: 5px;
+}
+.home-title {
+  font-weight: bold;
+  color: #3b5998;
+  margin-bottom: 5px;
+  display: block;
+  font-size: 14px;
+}
+
 .scroll-list {
   flex-grow: 1;           
   overflow-y: auto;       
@@ -233,14 +258,12 @@ button:active { box-shadow: none; transform: translate(1px, 1px); }
   border: 1px solid #ccc;
 }
 .photo-post p { white-space: pre-wrap; line-height: 1.4; }
-
-/* ★ 수정된 사진첩 이미지 CSS ★ */
 .photo-post img { 
-  width: auto;          /* 비율 유지를 위해 auto */
-  max-width: 100%;      /* 가로가 넘치지 않게 */
-  max-height: 400px;    /* 세로가 너무 길어지지 않게 제한 */
-  display: block;       /* 블록 요소로 변경 */
-  margin: 0 auto 10px auto; /* 가운데 정렬 */
+  width: auto; 
+  max-width: 100%; 
+  max-height: 400px; 
+  display: block; 
+  margin: 0 auto 10px auto; 
   border: 1px solid #ccc; 
 }
 
@@ -266,6 +289,28 @@ input.comment-input {
 .hidden-acorn:hover { transform: scale(1.2); opacity: 1; }
 @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
 
+/* ★ 입장 전용 모달 (Intro) ★ */
+#entry-modal {
+  display: flex; position: fixed; top:0; left:0; width:100%; height:100%;
+  background: rgba(0,0,0,0.8); z-index: 10000;
+  justify-content: center; align-items: center;
+  flex-direction: column;
+}
+.entry-box {
+  background: #f1f1f1; border: 2px solid #ff6600; padding: 30px;
+  text-align: center; border-radius: 10px; width: 300px;
+  box-shadow: 0 0 20px rgba(255,102,0,0.5);
+}
+.entry-input {
+  width: 100%; padding: 8px; margin: 15px 0;
+  border: 1px solid #999; font-family: 'Umdot15'; text-align: center;
+}
+.entry-btn {
+  background: #ff6600; color: white; border: 1px solid #cc5200;
+  padding: 8px 20px; cursor: pointer; font-weight: bold; width: 100%;
+}
+
+/* 일반 모달 */
 .modal-overlay {
   display: none; position: fixed; top:0; left:0; width:100%; height:100%;
   background: rgba(0,0,0,0.5); z-index: 9999;
@@ -293,6 +338,16 @@ input.comment-input {
 </head>
 
 <body>
+
+<div id="entry-modal">
+  <div class="entry-box">
+    <h2 style="color:#ff6600; margin-top:0;">Cyworld</h2>
+    <p>환영합Ꮣㅣ⊂ㅏ!</p>
+    <p style="font-size:12px; color:#666;">⋌˫용ṑㅏ실 닉네임을 입력ṑΗ㈜パㅔ요.</p>
+    <input type="text" id="nickname-input" class="entry-input" placeholder="닉네임 입력" onkeydown="if(event.key==='Enter') enterSite()">
+    <button class="entry-btn" onclick="enterSite()">입ጉ6㉭ドㄱI ♬</button>
+  </div>
+</div>
 
 <div id="reward-modal" class="modal-overlay">
   <div class="modal-content">
@@ -365,13 +420,46 @@ input.comment-input {
     </div>
 
     <div class="main-content">
-      <div id="guestbook" class="content-area">
+      
+      <div id="home" class="content-area scroll-list">
+        <div style="border-bottom:1px solid #ccc; padding-bottom:5px; margin-bottom:10px; color:#3b5998; font-weight:bold; flex-shrink: 0;">
+          홈 (Home)
+        </div>
+        <div class="home-content">
+          <div class="home-section">
+            <span class="home-title">① 랜덤 멤버 미니홈피 입장!</span>
+            링크를 누를 때마다 다른 멤버의 홈피가 열려요.<br>
+            (새로고침하면 멤버가 바뀝니다☆)
+          </div>
+
+          <div class="home-section">
+            <span class="home-title">② 방명록에 흔적을 남기면 답글이 📭</span>
+            AI 기능을 넣으려 했으나 각종 이슈로 인해…<br>
+            키워드별 랜덤 답글을 준비했어요.<br>
+            멤버별 최소 20개 이상, 전부 모아보세요♡<br>
+            <br>
+            <span style="color:#ff6600; background:#fff; padding:2px;">[ 키워드 힌트: ㅁㅎ? / 사랑 / 슬픔 / 우정 / 소문 / 생일 ]</span><br><br>
+            ⒧ 특정 멤버만 반응하는 이스터에그 키워드도 있습니다!<br>
+            ⑵ 방명록을 <b>10개</b> 이상 남기면 이벤트가 발생할지도...🤫
+          </div>
+
+          <div class="home-section">
+            <span class="home-title">③ BGM과 함께 사진첩 구경하기 🎧</span>
+            (사진마다 댓글 남기기 & 공감(♥) 가능!)
+          </div>
+
+          <div class="home-section">
+            <span class="home-title">④ 화면에 나타나는 도토리 수집 🌰</span>
+            (3개 수집 시 작은 선물이...✨)
+          </div>
+        </div>
+      </div>
+
+      <div id="guestbook" class="content-area" style="display:none;">
         <div style="border-bottom:1px solid #ccc; padding-bottom:5px; margin-bottom:10px; color:#3b5998; font-weight:bold; flex-shrink: 0;">
           방명록 (Guestbook)
         </div>
-        
         <div id="guestbook-list" class="scroll-list"></div>
-        
         <div class="input-wrapper">
           <textarea id="user-msg" placeholder="일촌 신청ṑト고 ＞ㅏへㅔ효..."></textarea>
           <button onclick="postMsg()">확인</button>
@@ -388,11 +476,11 @@ input.comment-input {
   </div>
 
   <div class="menu-container">
-    <div class="menu-tab" onclick="alert('준비중입Ꮮㅣ㉰')">홈</div>
+    <div id="tab-home" class="menu-tab active" onclick="showTab('home')">홈</div>
     <div class="menu-tab" onclick="alert('준비중입Ꮮㅣ㉰')">프로필</div>
     <div class="menu-tab" onclick="alert('준비중입Ꮮㅣ㉰')">다이어리</div>
     <div id="tab-photos" class="menu-tab" onclick="showTab('photos')">사진첩</div>
-    <div id="tab-guestbook" class="menu-tab active" onclick="showTab('guestbook')">방명록</div>
+    <div id="tab-guestbook" class="menu-tab" onclick="showTab('guestbook')">방명록</div>
   </div>
 </div>
 
@@ -405,6 +493,30 @@ let guestbookCount = 0;
 
 function closeModal(id) {
   document.getElementById(id).style.display = 'none';
+}
+
+/* ★ 1. 입장하기 기능 (BGM 자동재생 트리거) ★ */
+function enterSite() {
+  const input = document.getElementById('nickname-input');
+  if(input.value.trim()) {
+    myName = input.value.trim();
+  }
+  
+  // 입장 모달 숨기기
+  document.getElementById('entry-modal').style.display = 'none';
+  // 메인 화면 보여주기
+  document.getElementById('main-wrapper').style.visibility = 'visible';
+  
+  // ★ 여기서 BGM 재생 (사용자 클릭 직후라 가능) ★
+  const bgm = document.getElementById("bgm");
+  bgm.volume = 0.5;
+  bgm.play().catch(error => {
+    console.log("브라우저 정책상 재생 실패 시 클릭 유도 필요");
+  });
+
+  // 스케일링 및 도토리 스케줄 시작
+  adjustScale();
+  scheduleAcorns();
 }
 
 /* ★ 모바일 자동 스케일링 ★ */
@@ -496,9 +608,12 @@ function foundAcorn(id) {
   }
 }
 
+// ★ 탭 전환 함수 (홈, 방명록, 사진첩) ★
 function showTab(name){
   document.querySelectorAll('.menu-tab').forEach(t => t.classList.remove('active'));
   
+  // 각 탭의 display 설정 (flex로 통일하여 스크롤 문제 해결)
+  document.getElementById('home').style.display = (name==='home') ? 'flex' : 'none';
   document.getElementById('guestbook').style.display = (name==='guestbook') ? 'flex' : 'none';
   document.getElementById('photos').style.display = (name==='photos') ? 'flex' : 'none';
   
@@ -508,32 +623,36 @@ function showTab(name){
 /* ===== 3. 성격별 말투 ===== */
 const replyTemplates = {
   isfp: {
-    normal: ["ㅇ ㅏ.. 안녕? ㅎㅎ", "왔나..", "글 남겨줘서 고맙디..///", "나 그냥.. 이어폰 꽂고 침대에 누워 있는데.. MP3 배터리 다 돼가네..", "기타 줄 가는 중.. 이번 축제 때 나갈 거 연습해야 돼서"],
+    normal: ["ㅇ ㅏ.. 안녕? ㅎㅎ", "왔나..", "글 남겨줘서 고맙디..///", "오.. 나도 답방해주까..?", "처음 보네.. 반갑다..!"],
     love: ["어? 어..", "그런 말 하면.. 부끄러운데..", "얼굴 빨개졌다이가.. 책임지라.."],
     sad: ["무슨 일 있나? ㅠㅠ", "울지 마라.. 내도 슬퍼지네..", "토닥토닥.."],
     rumor: ["어? 그거 내 아니다.. ㅠㅠ", "그거 진짜 아인데..", "누가 그라는데?", "오해하지 마라.."],
+    doing: ["나 그냥.. 이어폰 꽂고 침대에 누워 있는데.. MP3 배터리 다 돼가네..", "기타 줄 가는 중.. 이번 축제 때 나갈 거 연습해야 돼서", "그냥.. 침대에 누워서 천장 보고 있다.. ㅎㅎ"],
     friend: ["내랑 일촌하고 싶다고..? ///", "받아주께.. 친하게 지내자..", "쪼매 부끄러운데.. 그래도 좋다", "연락 자주 해줄 거제?"]
   },
   entp: {
-    normal: ["오 왔냐?! 환영한다 ㅋㅋㅋ", "ㅎ2ㅎ2", "심심했는데 잘 왔다 ㅋㅋ", "너 기다리고 있었다 ㅋ 이제 오냐?", "나 지금 피시방임. 스타 한 판 뜨는 중인데 질 것 같다.. ㅡㅡ"],
+    normal: ["오 왔냐?! 환영한다 ㅋㅋㅋ", "ㅎ2ㅎ2", "심심했는데 잘 왔다 ㅋㅋ", "너 기다리고 있었다 ㅋ 이제 오냐?"],
     love: ["나 인기 많은 거 알지? 줄 서라 ㅋㅋ", "역시는 역시네 사람 볼 줄 아네", "반했냐? ㅋㅋㅋ"],
     sad: ["야 누가 괴롭힘? 이름 대라", "술 한잔 고? 내가 쏜다", "훌훌 털어버려 인생 뭐 있냐!"],
     rumor: ["내가 좀 핫하긴 하지? ㅋㅋ", "누구랑? 예쁘냐? 소개 좀 ㅋㅋ", "소설 쓰네 베스트셀러 감이다", "질투하냐? ㅋㅋ"],
+    doing: ["거울 보는 중ㅋ", "나 지금 피시방임. 스타 한 판 뜨는 중인데 질 것 같다.. ㅡㅡ", "니 생각? ㅋㅋㅋ 농담이고 폰 만지는 중", "라면 끓이는 중. 한 입만 달라고 하지 마라 ㅋ"],
     friend: ["당연히 콜이지!", "오늘부터 베프 고고?", "일촌명은 '준혁이꼬봉' 어때? 농담 ㅋ", "번호 찍어라 밥 사줌"]
   },
   istp_sohee: {
-    normal: ["ㅎㅇ", "방가루", "글 확인했음", "자주 오네? ㅋㅋ", "뭐하긴, 너랑 대화하지 ㅋㅋ"],
+    normal: ["ㅎㅇ", "방가루", "글 확인했음", "자주 오네? ㅋㅋ"],
     love: ["ㅋㅋㅋ 뭐래", "갑자기?", "나 좀 낯가려.. 하지 마 ㅋㅋ", "너 좀 웃기네?"],
     sad: ["왜 그래", "야 맛있는 거 먹으러 갈래?", "기운 내라"],
     rumor: ["뭐래", "아니거든 ㅡㅡ", "관심 끄셈", "소설 ㄴㄴ", "진짜 어이없네 ㅋㅋ"],
-    friend: ["음.. 생각 좀 해보고", "친해지면 받아줌", "일단 신청해 놔 ㅋㅋ", "겜 할 때 들어와라"]
+    doing: ["고음 지르기 연습 중. 아아악↗!! 시끄럽나? ㅋㅋ", "그냥 멍 때려.. 아무 생각 없는데..", "뭐하긴 너랑 대화하지 ㅋㅋ"],
+    friend: ["음.. 생각 좀 해보고", "친해지면 받아줌", "일단 일촌 신청해 놔 ㅋㅋ"]
   },
   cool_playful: {
     normal: ["안녕~ 근데 빈손이야?ㅋㅋ", `?ㅏㄴㅕ
- ㄴ    ?`, "나 지금 너한테 답글 남기는 중이지ㅋㅋ", "왔으면 발도장 꾹! ㅋㅋ", "나 지금 피아노 칠까 말까 고민 중 ㅋㅋ 귀찮네~", "비밀인데. 궁금해? 궁금하면 500원 ㅋㅋ", "ㅋㅋㅋ 반갑다"],
-    love: ["오~ 감당 가능? ㅋㅋ", "장난치지 마라~ 설렌다?", "ㅋㅋㅋ 귀엽네 이거"],
+ ㄴ    ?`, "나 지금 너한테 답글 남기는 중이지ㅋㅋ", "왔으면 발도장 꾹! ㅋㅋ", "ㅋㅋㅋ 반갑다"],
+    love: ["오~ 감당 가능? ㅋㅋ", "장난치지 마라~ 설렌다?", "ㅋㅋㅋ 귀엽네"],
     sad: ["에이 왜 우울해~ 웃자", "무슨 일인데? 들어는 줄게", "심각해지지 말자~"],
     rumor: ["비밀인데 어떻게 알았대?", "에이~ 설마~", "너 나 질투해? ㅋㅋ", "글쎄다~?"],
+    doing: ["악보 보는 중.. 머리 아픈데 멋있어 보이려나? ㅋ", "너 기다리고 있었지 (는 뻥이야ㅋ)", "학원 갈 준비 중;; 귀찮네~", "비밀인데. 궁금해? 궁금하면 500원 ㅋㅋ"],
     friend: ["일촌? 맛있는 거 사주면 ㅋㅋ", "콜! 대신 자주 와라", "너 하는 거 봐서~ ㅋㅋ", "오냐 받아줌", `
     ●  한!
 ☜=━╋┓턱!
@@ -542,21 +661,23 @@ const replyTemplates = {
    빵!!!!!!!!!!`]
   },
   intj: {
-    normal: ["왔어ㅎㅎ?", "오 안녕~", "ㅎㅎ밥 먹었어?", "오 글 남겨줘서 고마워ㅎㅎ 기분 좋다", "처음 보는 이름이네ㅋㅋ반가워", "오늘 하루는 어땠어?"],
+    normal: ["왔어?", "안녕~", "ㅋㅋ밥은 먹었어?", "오 마침 심심했는데ㅎㅎ", "처음 보는 이름이네ㅋㅋ반가워"],
     love: ["뭐야 ㅎㅎㅎㅋㅋㅋ", "나?? 나 좋아해?ㅋㅋㅋ", "얼굴 뜨거워지네..ㅋㅋㅋ", "그런 말 쉽게 하는 거 아니야~ㅎㅎ"],
     sad: ["너무 처져 있지 마. 파이팅!", "울지 말고 뚝", "이럴 땐 맛있는 거 먹어야되는데 사줄까?", "무슨 일인데? 말해봐 다 들어줄게"],
-    rumor: ["에이~ 설마 그런 걸 믿는 건 아니지? ^^", "확실한 거 아니면 말하지 않는 게 좋을 것 같아~", "그런 말보다 우리 서로 좋은 말만 하자!", "아니야ㅎㅎ"],
+    rumor: ["에이~ 설마 그런 걸 믿는 건 아니지?^^;", "확실한 거 아니면 말하지 않는 게 좋을 것 같아~", "그런 말보다 우리 서로 좋은 말만 하자!", "아니야ㅎㅎ"],
+    doing: ["크레이프케익 먹는중ㅎㅎ 너는?", "암것도 안해ㅋㅋ 심심한데 나 뭐할까", "오랜만에 책 좀 읽어볼까~ 고민만 하는중ㅋㅋ"],
     friend: ["응 친하게 지내자~", "오케이 자주 와~", "나도 너랑 친해지고 싶었는데 ㅋㅋ", "진짜? 좋지ㅎㅎ"]
   },
   isfp_riku: {
-    normal: ["나 지금 모찌 먹는 중!! 헤헤", "와써? 모하고 잇엇엉?", "헉 안뇽", "글 남겨줘서 고마웡ㅎㅎ", ],
-    love: ["에..? 나..? 진짜???? ///", "모야~ 부끄럽게.. >_< 근데 기분은 좋다 헤헤", "나 좋아한다고? 왜애???ㅋㅋ", "え、本当？ 나 오늘 잠 못 자겟당.."],
+    normal: ["안농 나 지금 모찌 먹는 중!! 헤헤", "와써? 모하고 잇엇엉?", "헉 안뇽", "반가워 >_< 처음 보는 친구넹", "우왕~~파도타기 하고 와써?", ],
+    love: ["에..? 나..? 진짜???? ///", "모야~ 부끄럽게.. >_< 근데 기분은 좋다 헤헤", "나를? 진짜? 왜애???ㅎㅎ", "え、本当？ 나 오늘 잠 못 자겟당.."],
     sad: ["울지 마아.. ㅠㅠ 너 울면 나도 슬픈데..", "우울해? 음.. 딸기모찌 사줄까? 먹으면 기분 좋아질 거야!", "누가 그랬어! 내가 가서 혼내줄게!--^!!!", "기운 내! 내가 옆에 잇어주께ㅜㅜ"],
     rumor: ["누가 그래?? 아니야~ㅠ", "에에~? 소문? 그런 거 믿지 마~ 나 지금 만화책 보느라 바빠!", "진짜 아니야! 억울해.. ㅠㅠ 믿어죠.."],
+    doing: ["나 모찌먹고잇엉!", "침대에서 뒹굴뒹굴 헤헤", "한국어 단어 외우는 중.. 어려워 ㅠㅠ 응원해줘!"],
     friend: ["오! 죠앙 오늘부터 우리 베프얌 >_<", "웅 나랑 매점 메이트 하자! 맛잇는고 알려줘 ㅎㅎ", "웅 앞으로도 방명록 자주 써줘야 돼? 약속!", "やった! 친구 생겨떠 ㅎㅎ 나 한국말 많이 가르쳐줭"]
   },
   istp_eunseok: {
-    normal: ["돌멩이 어서오고", `너 좀 ㅁト음øłl 든⊂ト`, "왕이 넘어지면? 킹콩 ㅋ", "숨쉬기 운동 하자 흡..하..흡..하..", "지금 돌멩이 관찰 중.. 얘는 왜 이렇게 생겼을까?", "텔레파시 보내는 중이었는데 받음? 찌리릿."],
+    normal: ["돌멩이 어서오고", `너 좀 ㅁト음øłl 든⊂ト`, "왕이 넘어지면? 킹콩 ㅋ", "숨쉬기 운동 하자 흡..하..흡..하..", "어 텔레파시 보내는 중이었는데 받음? 찌리릿."],
     love: ["너 나 좋아하냐? 보는 눈은 있어가지고", "부끄럽게 왜 이래.. (귀 빨개짐)", "칭찬 알러지 있음.."],
     sad: ["울면 산타 할아버지가 선물 안 준대", "뚝 그쳐라", "바나나 먹으면 나한테 반하나? ㅋㅋ(위로임)", `★＼＼＼＼＼＼★
 ＼★＼＼＼＼★＼
@@ -564,6 +685,7 @@ const replyTemplates = {
 ＼＼＼★★＼＼＼
 행운의 브๐ㅣV`],
     rumor: ["오잉ㅋㅋ?", "소문은 소문일 뿐 오해하지 말자~", "쉿, 국가 기밀임", "내가 좀 잘생긴 죄가 크지"],
+    doing: ["눈 깜빡이는 중", "광합성 중.. 햇빛이 따뜻하네..", "돌멩이가 뭘 하겠냐. 그냥 굴러다니지.", "지금 돌멩이 관찰 중.. 얘는 왜 이렇게 생겼을까?",],
     friend: ["일촌? 이촌은 안 되나 ㅋㅋ", "나랑 친구하려면 돌씨로 성을 바꿔야하는데 괜찮겠니? (농담임ㅋ)", "친구비 입금해 500원", "그래 친구 하자", "돌멩이 추가요"]
   }
 };
@@ -575,11 +697,12 @@ const members = [
     desc: "‥*♡* 오늘도 행복한 하루가 되시길... *♡*‥",
     mood: "센치함",
     img: "wonbin_profile.png",
-    bgm: { title: "RIIZE - Love 119", src: "bgm_wonbin.mp3" },
+    bgm: { title: "BGH to - 솜사탕 (Feat. 티아라 은정)", src: "bgm_wonbin.mp3" },
     replies: replyTemplates.isfp,
     secretPhoto: "wonbin3.png",
     photos: [
       { img: "wonbin_guitar.png", text: "오늘 연습 끝..\n손가락 물집 잡혔다 ㅠㅠ\n그래도 재밌네 역시", hearts: 1004 },
+      { img: "wonbin4.png", text: "오늘 연습 끝..\n손가락 물집 잡혔다 ㅠㅠ\n그래도 재밌네 역시", hearts: 1004 },
       { text: `이 결심이 오래지속되서
 그 결실을 이뤄냈을때
 내가 이 글을 보면서
@@ -605,7 +728,7 @@ const members = [
     desc: "모찌 먹고 싶다..\n한국어 공부 중!\n일촌 걸어죠 >_<",
     mood: "기쁨",
     img: "riku_profile.png",
-    bgm: { title: "NCT WISH - SAIL AWAY", src: "bgm_riku.mp3" },
+    bgm: { title: "브라운아이드걸스 - LOVE", src: "bgm_riku.mp3" },
     replies: replyTemplates.isfp_riku,
     secretPhoto: "riku3.png",
     photos: [
@@ -642,10 +765,10 @@ const members = [
   },
   {
     name: "백준혁",
-    desc: "내 패션 쩔지ㅋ\n일촌 신청 안 하면\n바보 멍충이😛",
+    desc: "친해지고싶으면 일촌거셈",
     mood: "간지",
     img: "jun_profile.png",
-    bgm: { title: "ID:Earth - Betelgeuse", src: "bgm_jun.mp3" },
+    bgm: { title: "프리스타일 - Y(Please Tell Me Why)", src: "bgm_eunseok.mp3" },
     replies: replyTemplates.entp,
     secretPhoto: "jun2.png",
     photos: [
@@ -660,17 +783,36 @@ const members = [
 교복이란 죄수복을 입고
 공부란 벌을 받고
 졸업이란 석방을 기다린다`, hearts: 2320 },
-      { img: "jun4.png", hearts: 889 }
+         { img: "jun5.png", text: `어떨진 몰라
+어쩔진 몰라
+
+손이가는데로
+맘이가는데로
+발이가는데로
+
+가는데로가면
+뭐가 잘못돼?
+
+어떤점수를
+원하는데,
+
+니가난아니잖아
+나도넌아니잖아`, hearts: 889 },
+      { img: "jun4.png", text: `나 사나이 백준혁
+숨지도 피하지도 않는다
+ㅇㄷ고 1학년이다
+형 보고싶음 찾아와라.
+`, hearts: 889 }
     ]
   },
   {
     name: "이소희",
-    desc: "노래 부르는 게\n세상에서 젤 좋아♬\n나랑 듀엣 할 사람?",
+    desc: "나랑 듀엣 할 사람?ㅋㅋ♬",
     mood: "노래중",
     img: "so4.png",
-    bgm: { title: "RIIZE - Get A Guitar", src: "bgm_sohee.mp3" },
+    bgm: { title: "MC몽 - 죽을 만큼 아파서 (feat. 멜로우)", src: "bgm_sohee.mp3" },
     replies: replyTemplates.istp_sohee,
-    secretPhoto: "so1.png",
+    secretPhoto: "so3.png",
     photos: [
       { img: "so2.png", text: `난 지금 미쳐가고있다
 이 헤드폰에 내 모든 몸과
@@ -697,12 +839,12 @@ const members = [
 그런데 그보다 더한열망은
 그들에게 지고싶지 않다
 <b>나도몰랏던 내안의 순수한열정</b>`, hearts: 234 },
-      { text: `<span style='color:red'>'괜찮으니까'</span>
+      { ing: "so5.png", text: `<span style='color:red'>'괜찮으니까'</span>
 
 그 남자애랑 잘 지내다가
 내가 좋아지면 그때 와
 `, hearts: 542 },
-      { img: "so3.png", text: `┃  ┣┃-* ☆
+      { img: "so1.png", text: `┃  ┣┃-* ☆
 ┗-*┃┃맘속엔
 네가있는데..
 ┃ ┫┃ -* ☆
@@ -715,7 +857,7 @@ const members = [
     desc: "뭘봐ㅋ",
     mood: "자신감",
     img: "gun_profile.png",
-    bgm: { title: "Kortis - Timeless", src: "bgm_geon.mp3" },
+    bgm: { title: "슈프림팀, 영준 - 그땐 그땐 그땐", src: "bgm_geon.mp3" },
     replies: replyTemplates.cool_playful,
     secretPhoto: "gun3.png",
     photos: [
@@ -741,15 +883,55 @@ Coldy한 나
 나만의 세계속에서 나만의 시간을 갖는다
 귀찮은 Girl들 귀찮은 Boy들..
 날 내버려둬,, 나는
-진정한 도시의남자.`, hearts: 897 }
+진정한 도시의남자.`, hearts: 897 },
+      { text: `옛날에, 김민지와 한은성이라는.. 커플이있었대.
+근데 그둘은. 참 이쁜사랑을 했었지..
+근데 어느날.. 김민지와의 라이벌이 생긴거야..
+그여자이름은 바로 이다영..
+이다영은. 어느날.. 민지를 찾아와 이렇게 말했어..
+"민지야 . 오늘 하루만 은성이 빌려주라..
+빌려주면 내가 은성이 깨끗이 잊을께" 라고 말을했어..
+민지는 내키지는 않았지만.. 하루만 빌려주기로했지..
+근데 .. 자꾸 마음이 불편한거야..
+그래서. 이다영과 한은성을 미행하기로했지..
+그둘은. 너무 행복해보였어..
+은성이도 다영이도..
+은성이는 나랑있을때보다 더행복해보여 ...
+너무 슬펐을때 ...
+그둘은.. 작은 모텔로 들어가는거야..
+곧바로 민지도 쫓아들어갔지..
+그리고는.. 살짝열린 문틈새로.. 민지는
+그둘을.. 몰래 지켜봤어..
+근데 둘이 뭐하고있는줄알아 ?
+다영이는.. 칼하나를 들고.. 자기 목에 같다데며 .. 이렇게 말햇어..
+"야.. 김민지가 좋아 내가 좋아?"
+"김민지"
+은성이는. 한시 오차없이 내이름을 말해주었어..
+그때 다영이가 자기목에 칼로 .. 살짝 그었더니
+피가 나기 시작했어.. 그때 또다시 말했어
+"이래도 김민지가좋아? "
+"응. 나는 김민지가 좋아 "
+
+그때.. 다영이가 자기 목에 대고잇던 칼을
+은성이 목으로 갔다대는거야....
+그러면서 .. 다시 말했지
+"이래도? 이래도! 김민지가 좋아?"
+"........."
+그때 . 은성이가 뭐라고 말했는줄알아?
+.
+.
+.
+.
+.
+"김민지 ... <b><span style='color:red'>눈감아 ..</span></b>"`, hearts: 234 },
     ]
   },
   {
     name: "오시온",
-    desc: "오늘도 평화로운 하루..\n커피 한 잔의 여유☕",
+    desc: "오시온의 미니홈피입니다.",
     mood: "여유",
     img: "sion_profile.png",
-    bgm: { title: "NCT WISH - WISH", src: "bgm_sion.mp3" },
+    bgm: { title: "더 넛츠 - 사랑의 바보", src: "bgm_sion.mp3" },
     replies: replyTemplates.intj,
     secretPhoto: "sion6.png",
     photos: [
@@ -757,11 +939,11 @@ Coldy한 나
       { img: "sion2.png", text: `내가 열수있는건 여기까지
 내 마음을 보여줄수있는건 거기까지
 
-더이상 들어오려고 하지마`, hearts: 707 },
+더이상 들어오려고 하지마`, hearts: 521 },
       { img: "sion4.png", text: `세상엔 힘들때가 한두번이 아니지..
 그러니 힘들땐 나처럼 웃어봐..
 나도 이렇게 항상 웃고있잖아..?ㅎ
-힘내!!`, hearts: 302 },
+힘내!!`, hearts: 1123 },
       { img: "sion8.png", text: `답답할때.....
 바람 맞으며... 하늘보는게 좋다....
 언제부턴가 바람 맞으면 좋아졌다.
@@ -771,9 +953,9 @@ Coldy한 나
 진실된 행복은 무었인가?
 자유로운거?돈이많은거?행복한거?물론 사람마다 다르겠지만
 내 가치관에서 봤을때 자신이 한개씩 가지고 있을만한...
-작지만 큰 소원을 이뤄보는거.. 이룰때 성취감 그 후에 즐거움 이라 생각한다..`, hearts: 707 },
-      { img: "sion7.png", text: `그녀를 위해 FECE관리`, hearts: 1092 },
-      { img: "sion5.png", text: "오늘은 좀 나쁜남자ㅎ", hearts: 1002 },
+작지만 큰 소원을 이뤄보는거.. 이룰때 성취감 그 후에 즐거움 이라 생각한다..`, hearts: 861 },
+      { img: "sion7.png", text: `그녀를 위해 FECE관리`, hearts: 2312 },
+      { img: "sion5.png", text: "오늘은 좀 나쁜남자ㅎ", hearts: 3004 },
       { img: "sion3.png", text: `北이 미사일을 발사했어
 나는 두렵지않을꺼야 오늘은 식목일..
 평소때 처럼 그냥 싸이에서 추억이나 보면서
@@ -786,18 +968,18 @@ Coldy한 나
     desc: "돌멩이는 굴러가고\n나는 생각한다.\n고로 나는 존재한다.",
     mood: "멍...",
     img: "dol_profile.png",
-    bgm: { title: "RIIZE - Memories", src: "bgm_eunseok.mp3" },
+    bgm: { title: "izi - 응급실", src: "bgm_dol.mp3" },
     replies: replyTemplates.istp_eunseok,
     secretPhoto: "dol2.png",
     photos: [
-      { img: "dol1.png", text: "돌찬영과", hearts: 435 },
+      { img: "dol1.png", text: "돌찬영과", hearts: 1435 },
       { text: `온몸이 쑤시네...
 오늘도 어김없는 비오는 아침..
 오늘 난 한가지를 잘한거 같애..
 후회없는...거짓없는...
 한번의 실수는 용납될수있어두..
 그이상은...
-절대....<span style='color:red'>naver</span>`, hearts: 342 },
+절대....<span style='color:red'>naver</span>`, hearts: 524 },
       { img: "dol4.png", text: `나는 사실 인맥이 그리 넓은 편은 아니다
 
 
@@ -823,7 +1005,7 @@ Coldy한 나
 "내 가슴 속에는 부희주라는 한 사람이 더 있거든요.."
 추운 아침이었지만 나의 뜨거운 가슴으로
 버스안을 훈훈하게 데웠던 순간이었다..`, hearts: 1394 },
-      { img: "dol3.png", text: "역시 이건 좀ㅋ.. 오반가", hearts: 333 },
+      { img: "dol3.png", text: "역시 이건 좀ㅋ.. 오반가", hearts: 789 },
       { text: `고도의 과학발달로 인하여
 서울에서는 사람들이 지하에서 이동을한다.
 
@@ -856,9 +1038,6 @@ Coldy한 나
 const currentMember = members[Math.floor(Math.random() * members.length)];
 
 window.onload = () => {
-  const inputName = prompt("미니홈피에서 사용할 닉네임을 알려주세요!", "익명");
-  if(inputName) myName = inputName;
-
   document.getElementById("profile-img").src = currentMember.img;
   document.getElementById("member-name").innerText = currentMember.name + "의 미니홈피";
   
@@ -875,8 +1054,6 @@ window.onload = () => {
     "<marquee scrollamount='3'> ☆-..- 🎵 BGM: " + currentMember.bgm.title + " -..-☆ </marquee>";
 
   renderPhotos(currentMember.photos);
-  scheduleAcorns();
-  adjustScale(); // 로드시 스케일링 실행
 };
 
 function renderPhotos(photoList) {
@@ -944,10 +1121,13 @@ function postMsg() {
   setTimeout(() => {
     const text = userMsg.replace(/\s/g, "").toLowerCase();
     
+    // ★ 여기가 핵심: 매번 normal로 초기화해야 "뭐해" 입력 후 다른 말을 해도 doing이 안 나옴!
+    let type = "normal";
+
     // 1. 여친/짝사랑 질문
     if (
-      text.includes("여친있") || text.includes("여자친구있") || text.includes("좋아하는사람있") || 
-      text.includes("솔로") || text.includes("사귀는")
+      text.includes("여친있") || text.includes("여자친구있") || text.includes("여친잇") || text.includes("여자친구잇") || text.includes("좋아하는사람있") || 
+      text.includes("솔로") || text.includes("애인있") || text.includes("사귀는")
     ) {
       let loveMsg = "";
       if (currentMember.name === "박원빈") loveMsg = "좋아하는 사람은 있다..///";
@@ -964,7 +1144,8 @@ function postMsg() {
     }
 
     // 2. 생일 축하
-    if (text.includes("생일축하")) {
+    if (text.includes("생일축하") || text.includes("생축") || text.includes("생일추카"))
+    {
       let msg = "오 고마워 ㅋㅋ";
       if (currentMember.name === "박원빈") msg = "어.. 고맙디.. 진짜 감동이다ㅠㅠ";
       else if (currentMember.name === "송은석") msg = "돌멩이의 탄생일을 축하해줘서 땡큐.";
@@ -982,38 +1163,59 @@ function postMsg() {
     if (currentMember.name === "박원빈") {
       if (text.includes("기타쳐줘")) { document.getElementById(id).innerText = `ㄴ 박원빈: 아직 연습 중이라 부끄럽다..(딩가딩가..)`; return; }
       if (text.includes("야옹") || text.includes("고양이")) { document.getElementById(id).innerText = `ㄴ 박원빈: 야옹..? 내 고양이 닮았나?ㅎㅎ`; return; }
+      if (text.includes("사진") || text.includes("셀카")) { document.getElementById(id).innerText = `ㄴ 박원빈: 사진? 아.. 부끄러워서 많이 안 찍는데.. 연습해볼게..`; return; }
+      if (text.includes("울산")) { document.getElementById(id).innerText = `ㄴ 박원빈: 어? 울산 아나! 갑자기 가고싶네.. 바다 보고 싶다..`; return; }
     }
     if (currentMember.name === "송은석") {
       if (text.includes("돌멩이")) { document.getElementById(id).innerText = `ㄴ 송은석: 굴러가유~ 데굴데굴`; return; }
-      if (text.includes("개그해줘")) { document.getElementById(id).innerText = `ㄴ 송은석: 중국집의 현재 시각은? ...............짜장면 배달시키신 분 ㅋ`; return; }
+      if (text.includes("돌자")) { document.getElementById(id).innerText = `ㄴ 송은석: 그게 뭔 뜻인데? 돌의 왕자? 작명센스 굿이네 ㅋ`; return; }
+      if (text.includes("얼굴") || text.includes("잘생")) { document.getElementById(id).innerText = `ㄴ 송은석: 신이 나를 만들 때.. 실수를 안 하셨지. 훗.`; return; }
+      if (text.includes("잠") || text.includes("잘자")) { document.getElementById(id).innerText = `ㄴ 송은석: 너도 잘자 악몽 꾸지 말고`; return; }
+      if (text.includes("개그해줘") || text.includes("아재개그")) { document.getElementById(id).innerText = `ㄴ 송은석: 중국집의 현재 시각은? ...............짜장면 배달시키신 분 ㅋ`; return; }
     }
     if (currentMember.name === "이소희") {
-      if (text.includes("노래해줘")) { document.getElementById(id).innerText = `ㄴ 이소희: 흠흠! 목 좀 풀고~ 🎤 신청곡 받아요!`; return; }
-      if (text.includes("귀여워")) { document.getElementById(id).innerText = `ㄴ 이소희: 아 진짜? 나 안 귀여운데.. ㅎㅎㅎㅎㅎㅎ`; return; }
+      if (text.includes("노래해줘")) { document.getElementById(id).innerText = `ㄴ 이소희: 흠흠! 목 좀 풀고~  신청곡 받아요!`; return; }
+      if (text.includes("모자") || text.includes("비니")) { document.getElementById(id).innerText = `ㄴ 이소희: 나 모자 박제된 거 아니야.. 머리 안 감은 거 아님;;`; return; }
+      if (text.includes("득음") || text.includes("고음")) { document.getElementById(id).innerText = `ㄴ 이소희: 아아아↗↗!! 어때? 돌고래 같았어? ㅋㅋ`; return; }
+      if (text.includes("또리")) { document.getElementById(id).innerText = `ㄴ 이소희: 또리? 내가 왜 또리야?? 먼가 귀엽네 ㅋㅋ`; return; }
+      if (text.includes("귀여워")) { document.getElementById(id).innerText = `ㄴ 이소희: 아 진짜? 아닌데 나 안 귀여움.. ㅋㅋ`; return; }
     }
     if (currentMember.name === "오시온") {
       if (text.includes("디저트")) { document.getElementById(id).innerText = `ㄴ 오시온: 오 너도 디저트 좋아해? 같이 먹으러 갈래?`; return; }
+      if (text.includes("커피") || text.includes("아아")) { document.getElementById(id).innerText = `ㄴ 오시온: 나 커피 없음 못살제ㅎㅎ 너도 좋아해?`; return; }
+      if (text.includes("책") || text.includes("소설")) { document.getElementById(id).innerText = `ㄴ 오시온: 난 추리소설 좋아해ㅋㅋ 요즘은 애크로이드 살인사건 읽는 중. 다 읽고 빌려줄까?`; return; }
       if (text.includes("사랑해")) { document.getElementById(id).innerText = `ㄴ 오시온: 뭐야 ㅋㅋ사랑한다는 말 쉽게 하면 안돼~`; return; }
     }
     if (currentMember.name === "백준혁") {
-      if (text.includes("잘생겼다")) { document.getElementById(id).innerText = `ㄴ 백준혁: 아 거울 볼 맛 난다니까~ 역시 넌 뭘 좀 알아 ㅋㅋ`; return; }
+      if (text.includes("잘생겼다")) { document.getElementById(id).innerText = `ㄴ 백준혁: 그치? 거울 볼 맛 난다니까~ 역시 넌 뭘 좀 알아 ㅋㅋ`; return; }
+      if (text.includes("질투")) { document.getElementById(id).innerText = `ㄴ 백준혁: 질투? 귀엽네 ㅋㅋㅋ 걱정 마 너밖에 없다`; return; }
+      if (text.includes("운동")) { document.getElementById(id).innerText = `ㄴ 백준혁: 나 요즘 운동함. 어깨 넓어진 거 보임? ㅋ`; return; }
+      if (text.includes("공부") || text.includes("시험")) { document.getElementById(id).innerText = `ㄴ 백준혁: 공부가 인생의 전부는 아니다~ 놀 땐 놀아야지!`; return; }
     }
     if (currentMember.name === "리쿠") {
       if (text.includes("おはよう") || text.includes("こんにちは")) { document.getElementById(id).innerText = `ㄴ 리쿠: え！日本語できるの？？ 안뇽ㅎㅎ`; return; }
-      if (text.includes("다이스키") || text.includes("好き")) { document.getElementById(id).innerText = `ㄴ 리쿠: え、주니야? 주니면 좋겟당..ㅎㅎ고마워`; return; }
+      if (text.includes("かわい") || text.includes("카와이") || text.includes("귀여")) { document.getElementById(id).innerText = `ㄴ 리쿠: 진짜??고마워//_// 너두 かわちいだよん~ `; return; }
+      if (text.includes("누나")) { document.getElementById(id).innerText = `ㄴ 리쿠: 누나? 나보다 누나야?? 마싯는거 사주면 누나라고 부를게용 헤헤`; return; }
+      if (text.includes("스키") || text.includes("츠키") || text.includes("付き合って") || text.includes("好き")) { document.getElementById(id).innerText = `ㄴ 리쿠: え、미아내.. 나 주니 조아해..ㅠㅠ 그래두 고마워!!`; return; }
+      if (text.includes("애햄") || text.includes("햄햄")) { document.getElementById(id).innerText = `ㄴ 리쿠: 그게모야??햄?먹는고? 햄 조아하징`; return; }
       if (text.includes("모찌")) { document.getElementById(id).innerText = `ㄴ 리쿠: 오! 나 모찌 진짜 조아해 같이 먹으러 갈래??`; return; }
     }
     if (currentMember.name === "안건호") {
       if (text.includes("피아노")) { document.getElementById(id).innerText = `ㄴ 안건호: 한 곡 쳐줄까? 반하지나 마라 ㅋㅋ`; return; }
+      if (text.includes("연주") || text.includes("곡")) { document.getElementById(id).innerText = `ㄴ 안건호: 무슨 곡 듣고싶은데? 이루마? 쇼팽? 말만해ㅋ`; return; }
+      if (text.includes("데이트")) { document.getElementById(id).innerText = `ㄴ 안건호: 데이트? 피아노 학원에서 만날래? ㅋㅋㅋ`; return; }
       if (text.includes("바보")) { document.getElementById(id).innerText = `ㄴ 안건호: 바다의 보물?ㅋ 응 반사😜`; return; }
     }
 
     // 4. 일반 분류
-    let type = "normal";
-    if (text.includes("소문") || text.includes("들었어") || text.includes("봤어") || text.includes("진짜야")) type = "rumor";
-    else if (text.includes("친구") || text.includes("친해") || text.includes("베프") || text.includes("일촌") || text.includes("연락") || text.includes("칭긔") ||  text.includes("칭구") ||  text.includes("놀자")) type = "friend";
-    else if (text.includes("사랑") || text.includes("좋아") || text.includes("사귀자") || text.includes("내꺼") || text.includes("결혼")) type = "love";
-    else if (text.includes("힘들") || text.includes("슬퍼") || text.includes("우울") || text.includes("눈물")) type = "sad";
+    // 3-1. "뭐해?" 질문 감지
+    if (text.includes("뭐해") || text.includes("머해") || text.includes("머행") || text.includes("모해") || text.includes("무행") || text.includes("뭐함") || text.includes("뭐행") || text.includes("머하") || text.includes("모함") || text.includes("뭐하")) {
+       type = "doing"; 
+    }
+    else if (text.includes("소문") || text.includes("들었어") || text.includes("루머") || text.includes("실망") || text.includes("봤어") || text.includes("진짜야")) type = "rumor";
+    else if (text.includes("친구") || text.includes("친해") || text.includes("베프") ||  text.includes("우정") ||  text.includes("절친") || text.includes("일촌") || text.includes("연락") || text.includes("칭긔") ||  text.includes("칭구") ||  text.includes("놀자")) type = "friend";
+    else if (text.includes("사랑") || text.includes("좋아") || text.includes("잘생") || text.includes("멋져") || text.includes("멋있") || text.includes("반했") || text.includes("조아") || text.includes("사커") || text.includes("남친") || text.includes("죠아") || text.includes("사귀자") || text.includes("보고시") || text.includes("보고싶") || text.includes("보구싶") ||text.includes("보구시") || text.includes("내꺼") || text.includes("결혼")) type = "love";
+    else if (text.includes("힘들") || text.includes("슬퍼") || text.includes("슬픔") || text.includes("지쳐") || text.includes("울고") || text.includes("흑흑") || text.includes("엉엉") || text.includes("우울") || text.includes("눈물")) type = "sad";
 
     const replyPool = currentMember.replies[type] || currentMember.replies['normal'];
     const reply = replyPool[Math.floor(Math.random() * replyPool.length)];
@@ -1029,6 +1231,15 @@ window.addEventListener("click", () => {
 </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
 
 
 
