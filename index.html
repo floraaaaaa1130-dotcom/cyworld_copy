@@ -522,19 +522,34 @@ function enterSite() {
     myName = input.value.trim();
   }
   
+  // ▼▼▼ [핵심 수정] 아래 내용들이 추가되어야 데이터가 보입니다! ▼▼▼
+  
+  // 1. 프로필 이미지와 소개글 연결
+  document.getElementById("profile-img").src = currentMember.img;
+  document.getElementById("profile-desc").innerText = currentMember.desc;
+  
+  // 2. BGM 제목 표시 및 오디오 소스 연결
+  document.getElementById("bgm-title").innerText = "♬ " + currentMember.bgm.title;
+  const bgm = document.getElementById("bgm");
+  bgm.src = currentMember.bgm.src; // 오디오 파일 경로 설정 필수!
+
+  // 3. 사진첩 목록 렌더링 실행
+  renderPhotos(currentMember.photos);
+
+  // ▲▲▲ [수정 끝] ▲▲▲
+
   // 입장 모달 숨기기
   document.getElementById('entry-modal').style.display = 'none';
   // 메인 화면 표시
   document.getElementById('main-wrapper').style.visibility = 'visible';
   
-  // BGM 재생 시도
-  const bgm = document.getElementById("bgm");
+  // BGM 재생 시도 (소스가 연결되었으므로 이제 소리가 날 거예요)
   bgm.volume = 0.5;
   bgm.play().catch(error => {
     console.log("Auto-play blocked by browser policy");
   });
 
-  // 스케일링 및 도토리 스케줄 시작 (이때부터 시작됨)
+  // 스케일링 및 도토리 스케줄 시작
   adjustScale();
   scheduleAcorns();
 }
@@ -1241,3 +1256,4 @@ window.addEventListener("click", () => {
 </script>
 </body>
 </html>
+
