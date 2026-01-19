@@ -802,7 +802,7 @@ const members = [
   },
   {
     name: "백준혁",
-    desc: "내 패션 쩔지ㅋ\n친해지고싶음 일촌 신청 ㄱㄱ",
+    desc: "친해지고싶으면 일촌거셈",
     mood: "간지",
     img: "jun_profile.png",
     bgm: { title: "프리스타일 - Y(Please Tell Me Why)", src: "bgm_eunseok.mp3" },
@@ -1165,14 +1165,14 @@ function postMsg() {
       else if (currentMember.name === "리쿠") loveMsg = "에 여자친구 없어..!! 근데 조아하는 사람은 있어 헤헤";
       else if (currentMember.name === "백준혁") loveMsg = "내 여친? 거울 봐봐 거기 있네";
       else if (currentMember.name === "안건호") loveMsg = "너잖아. 모른 척 하기냐? ㅋㅋ 실망인데";
-      else if (currentMember.name === "주훈") loveMsg = "비밀. 친해지면 알려줌 ㅋㅋ";
 
       document.getElementById(id).innerText = `ㄴ ${currentMember.name}: ${loveMsg}`;
       return; 
     }
 
     // 2. 생일 축하
-    if (text.includes("생일축하")) {
+    if (text.includes("생일축하") || text.includes("생축") || text.includes("생일추카"))
+    {
       let msg = "오 고마워 ㅋㅋ";
       if (currentMember.name === "박원빈") msg = "어.. 고맙디.. 진짜 감동이다ㅠㅠ";
       else if (currentMember.name === "송은석") msg = "돌멩이의 탄생일을 축하해줘서 땡큐.";
@@ -1195,12 +1195,13 @@ function postMsg() {
     }
     if (currentMember.name === "송은석") {
       if (text.includes("돌멩이")) { document.getElementById(id).innerText = `ㄴ 송은석: 굴러가유~ 데굴데굴`; return; }
+      if (text.includes("돌자")) { document.getElementById(id).innerText = `ㄴ 송은석: 그게 뭔 뜻인데? 돌의 왕자? 작명센스 굿이네 ㅋ`; return; }
       if (text.includes("얼굴") || text.includes("잘생")) { document.getElementById(id).innerText = `ㄴ 송은석: 신이 나를 만들 때.. 실수를 안 하셨지. 훗.`; return; }
       if (text.includes("잠") || text.includes("잘자")) { document.getElementById(id).innerText = `ㄴ 송은석: 너도 잘자 악몽 꾸지 말고`; return; }
       if (text.includes("개그해줘") || text.includes("아재개그")) { document.getElementById(id).innerText = `ㄴ 송은석: 중국집의 현재 시각은? ...............짜장면 배달시키신 분 ㅋ`; return; }
     }
     if (currentMember.name === "이소희") {
-      if (text.includes("노래해줘")) { document.getElementById(id).innerText = `ㄴ 이소희: 흠흠! 목 좀 풀고~ 🎤 신청곡 받아요!`; return; }
+      if (text.includes("노래해줘")) { document.getElementById(id).innerText = `ㄴ 이소희: 흠흠! 목 좀 풀고~  신청곡 받아요!`; return; }
       if (text.includes("모자") || text.includes("비니")) { document.getElementById(id).innerText = `ㄴ 이소희: 나 모자 박제된 거 아니야.. 머리 안 감은 거 아님;;`; return; }
       if (text.includes("득음") || text.includes("고음")) { document.getElementById(id).innerText = `ㄴ 이소희: 아아아↗↗!! 어때? 돌고래 같았어? ㅋㅋ`; return; }
       if (text.includes("또리")) { document.getElementById(id).innerText = `ㄴ 이소희: 또리? 내가 왜 또리야?? 먼가 귀엽네 ㅋㅋ`; return; }
@@ -1220,9 +1221,10 @@ function postMsg() {
     }
     if (currentMember.name === "리쿠") {
       if (text.includes("おはよう") || text.includes("こんにちは")) { document.getElementById(id).innerText = `ㄴ 리쿠: え！日本語できるの？？ 안뇽ㅎㅎ`; return; }
+      if (text.includes("かわい") || text.includes("카와이") || text.includes("귀여")) { document.getElementById(id).innerText = `ㄴ 리쿠: 진짜??고마워//_// 너두 かわちいだよん~ `; return; }
       if (text.includes("누나")) { document.getElementById(id).innerText = `ㄴ 리쿠: 누나? 나보다 누나야?? 마싯는거 사주면 누나라고 부를게용 헤헤`; return; }
-      if (text.includes("다이스키") || text.includes("好き")) { document.getElementById(id).innerText = `ㄴ 리쿠: え、주니야? 주니면 좋겟당..ㅎㅎ고마워`; return; }
-      if (text.includes("애햄") || text.includes("햄햄")) { document.getElementById(id).innerText = `ㄴ 리쿠: 그게모야??햄?먹는고? 햄햄 조아하징`; return; }
+      if (text.includes("스키") || text.includes("츠키") || text.includes("付き合って") || text.includes("好き")) { document.getElementById(id).innerText = `ㄴ 리쿠: え、미아내.. 나 주니 조아해..ㅠㅠ 그래두 고마워!!`; return; }
+      if (text.includes("애햄") || text.includes("햄햄")) { document.getElementById(id).innerText = `ㄴ 리쿠: 그게모야??햄?먹는고? 햄 조아하징`; return; }
       if (text.includes("모찌")) { document.getElementById(id).innerText = `ㄴ 리쿠: 오! 나 모찌 진짜 조아해 같이 먹으러 갈래??`; return; }
     }
     if (currentMember.name === "안건호") {
@@ -1231,16 +1233,16 @@ function postMsg() {
       if (text.includes("데이트")) { document.getElementById(id).innerText = `ㄴ 안건호: 데이트? 피아노 학원에서 만날래? ㅋㅋㅋ`; return; }
       if (text.includes("바보")) { document.getElementById(id).innerText = `ㄴ 안건호: 바다의 보물?ㅋ 응 반사😜`; return; }
     }
-
+    
     // 4. 일반 분류
     // 3-1. "뭐해?" 질문 감지
     if (text.includes("뭐해") || text.includes("머해") || text.includes("머행") || text.includes("모해") || text.includes("무행") || text.includes("뭐함") || text.includes("뭐행") || text.includes("머하") || text.includes("모함") || text.includes("뭐하")) {
        type = "doing"; 
     }
-    else if (text.includes("소문") || text.includes("들었어") || text.includes("봤어") || text.includes("진짜야")) type = "rumor";
-    else if (text.includes("친구") || text.includes("친해") || text.includes("베프") || text.includes("일촌") || text.includes("연락") || text.includes("칭긔") ||  text.includes("칭구") ||  text.includes("놀자")) type = "friend";
-    else if (text.includes("사랑") || text.includes("좋아") || text.includes("사귀자") || text.includes("내꺼") || text.includes("결혼")) type = "love";
-    else if (text.includes("힘들") || text.includes("슬퍼") || text.includes("우울") || text.includes("눈물")) type = "sad";
+    else if (text.includes("소문") || text.includes("들었어") || text.includes("루머") || text.includes("실망") || text.includes("봤어") || text.includes("진짜야")) type = "rumor";
+    else if (text.includes("친구") || text.includes("친해") || text.includes("베프") ||  text.includes("우정") ||  text.includes("절친") || text.includes("일촌") || text.includes("연락") || text.includes("칭긔") ||  text.includes("칭구") ||  text.includes("놀자")) type = "friend";
+    else if (text.includes("사랑") || text.includes("좋아") || text.includes("잘생") || text.includes("멋져") || text.includes("멋있") || text.includes("반했") || text.includes("조아") || text.includes("사커") || text.includes("남친") || text.includes("죠아") || text.includes("사귀자") || text.includes("보고시") || text.includes("보고싶") || text.includes("보구싶") ||text.includes("보구시") || text.includes("내꺼") || text.includes("결혼")) type = "love";
+    else if (text.includes("힘들") || text.includes("슬퍼") || text.includes("슬픔") || text.includes("지쳐") || text.includes("울고") || text.includes("흑흑") || text.includes("엉엉") || text.includes("우울") || text.includes("눈물")) type = "sad";
 
     const replyPool = currentMember.replies[type] || currentMember.replies['normal'];
     const reply = replyPool[Math.floor(Math.random() * replyPool.length)];
@@ -1256,4 +1258,5 @@ window.addEventListener("click", () => {
 </script>
 </body>
 </html>
+
 
