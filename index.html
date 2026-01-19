@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 <title>☆-..- 2005년의 어느 날 -..-☆</title>
 
 <style>
@@ -20,8 +20,13 @@
   --tab-color:#298d9e;
 }
 body {
-  background:#b1b1b1; display:flex; justify-content:center;
-  padding-top:40px; margin:0;
+  background:#b1b1b1; 
+  display:flex; 
+  justify-content:center;
+  padding-top:40px; 
+  margin:0;
+  /* 모바일에서 스크롤 튀는 현상 방지 */
+  overflow-x: hidden;
   cursor: url('https://cur.cursors-4u.net/cursors/cur-2/cur117.cur'), auto;
 }
 
@@ -30,13 +35,17 @@ body {
   background:var(--main-blue);
   padding: 20px 0px 20px 20px; 
   border-radius:10px;
-  width:900px;
-  height:550px;
+  width:900px; /* 고정 크기 */
+  height:550px; /* 고정 크기 */
   border: 1px solid black;
   display: flex;
   align-items: flex-start;
   position: relative;
+  /* ★ 핵심: 화면이 줄어들어도 절대 찌그러지지 않게 고정 ★ */
+  flex-shrink: 0; 
+  transform-origin: top center; /* 축소 시 기준점 */
 }
+
 .white-box {
   background:white; 
   border-radius:8px;
@@ -79,7 +88,7 @@ body {
   width: 80px;
 }
 
-/* ===== 왼쪽 프로필 영역 (디자인 수정됨) ===== */
+/* ===== 왼쪽 프로필 영역 ===== */
 .profile {
   width:28%; border-right:1px dashed #ccc;
   padding-right:15px; text-align:center;
@@ -87,7 +96,6 @@ body {
   flex-direction: column;
   align-items: center;
   height: 100%;
-  /* 내용이 많으면 전체적으로 스크롤 됨 */
   overflow-y: auto;
   scrollbar-width: none; 
 }
@@ -107,17 +115,15 @@ body {
 .today-label { color: #298d9e; font-weight: bold; margin-right: 5px; }
 .today-icon { border: 1px solid #ddd; padding: 1px 4px; margin-right: 3px; cursor: pointer; border-radius: 2px; }
 
-/* ★ 프로필 사진 크기 제한 (이미지가 너무 길어지는 것 방지) ★ */
 .profile-img { 
   width:100%; 
-  max-height: 200px; /* 높이 제한 */
-  object-fit: cover; /* 비율 유지하며 꽉 채우기 */
+  max-height: 200px; 
+  object-fit: cover; 
   margin-bottom:10px; 
   border: 1px solid #ccc; 
   flex-shrink: 0; 
 }
 
-/* ★ 프로필 소개글 (박스 제거, 흰 바탕에 글씨만) ★ */
 .profile-desc {
   width: 100%;
   text-align: left;
@@ -126,13 +132,10 @@ body {
   margin-bottom: 10px;
   color: #333;
   padding: 2px;
-  
-  /* 박스 디자인 제거 */
   border: none;
   background: transparent;
-  
   white-space: pre-wrap; 
-  flex-shrink: 0; /* 글자가 찌그러지지 않도록 */
+  flex-shrink: 0; 
 }
 
 .ilchon-select {
@@ -319,7 +322,7 @@ input.comment-input {
   </div>
 </div>
 
-<div class="wrapper">
+<div id="main-wrapper" class="wrapper">
   <div class="white-box">
     
     <div id="acorn-1" class="hidden-acorn" onclick="foundAcorn(1)">🌰</div>
@@ -396,6 +399,27 @@ function closeModal(id) {
   document.getElementById(id).style.display = 'none';
 }
 
+/* ★ 모바일 자동 스케일링 (화면이 작으면 축소) ★ */
+function adjustScale() {
+  const wrapper = document.getElementById('main-wrapper');
+  const winWidth = window.innerWidth;
+  const targetWidth = 940; // 여백 포함 대략적 너비
+
+  if (winWidth < targetWidth) {
+    const scale = winWidth / targetWidth;
+    // 축소 적용 (상단 중앙 기준)
+    wrapper.style.transform = `scale(${scale})`;
+    // 축소된 만큼 body 높이 조정 (여백 제거)
+    document.body.style.height = `${550 * scale + 50}px`; 
+  } else {
+    wrapper.style.transform = 'none';
+    document.body.style.height = 'auto';
+  }
+}
+
+// 화면 크기 변경 시마다 재계산
+window.addEventListener('resize', adjustScale);
+
 /* ===== 1. 자동 일촌 신청 메시지 ===== */
 const ilchonMessages = {
   "박원빈": "저기.. 우리.. 친해질래..? (부끄)",
@@ -421,7 +445,6 @@ function acceptIlchon() {
   alert(`[${currentMember.name}] 님과 일촌이 되었습니다!\n\n일촌명: ${myName} ❤️ ${currentMember.name}`);
   closeModal('ilchon-modal');
   
-  // 드롭다운 업데이트
   const select = document.getElementById('ilchon-status-bar');
   if(select) {
     select.innerHTML = `<option>★ 일촌 (${myName})</option>`;
@@ -710,6 +733,7 @@ window.onload = () => {
 
   renderPhotos(currentMember.photos);
   scheduleAcorns();
+  adjustScale(); // 로드시 스케일링 실행
 };
 
 function renderPhotos(photoList) {
