@@ -1154,8 +1154,8 @@ function postMsg() {
 
     // 1. 여친/짝사랑 질문
     if (
-      text.includes("여친있") || text.includes("여자친구있") || text.includes("좋아하는사람있") || 
-      text.includes("솔로") || text.includes("사귀는")
+      text.includes("여친있") || text.includes("여자친구있") || text.includes("여친잇") || text.includes("여자친구잇") || text.includes("좋아하는사람있") || 
+      text.includes("솔로") || text.includes("애인있") || text.includes("사귀는")
     ) {
       let loveMsg = "";
       if (currentMember.name === "박원빈") loveMsg = "좋아하는 사람은 있다..///";
@@ -1165,6 +1165,7 @@ function postMsg() {
       else if (currentMember.name === "리쿠") loveMsg = "에 여자친구 없어..!! 근데 조아하는 사람은 있어 헤헤";
       else if (currentMember.name === "백준혁") loveMsg = "내 여친? 거울 봐봐 거기 있네";
       else if (currentMember.name === "안건호") loveMsg = "너잖아. 모른 척 하기냐? ㅋㅋ 실망인데";
+      else if (currentMember.name === "주훈") loveMsg = "비밀. 친해지면 알려줌 ㅋㅋ";
 
       document.getElementById(id).innerText = `ㄴ ${currentMember.name}: ${loveMsg}`;
       return; 
@@ -1258,5 +1259,6 @@ window.addEventListener("click", () => {
 </script>
 </body>
 </html>
+
 
 
