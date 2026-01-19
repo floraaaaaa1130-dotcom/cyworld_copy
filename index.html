@@ -79,18 +79,20 @@ body {
   width: 80px;
 }
 
-/* ===== 왼쪽 프로필 영역 (크기 문제 해결) ===== */
+/* ===== 왼쪽 프로필 영역 (디자인 수정됨) ===== */
 .profile {
   width:28%; border-right:1px dashed #ccc;
   padding-right:15px; text-align:center;
-  /* ★ Flex 설정 추가: 세로 정렬 및 높이 꽉 채우기 */
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 100%; 
+  height: 100%;
+  /* 내용이 많으면 전체적으로 스크롤 됨 */
+  overflow-y: auto;
+  scrollbar-width: none; 
 }
+.profile::-webkit-scrollbar { display: none; }
 
-/* ★ TODAY IS 감성 박스 ★ */
 .today-box {
   width: 100%;
   border: 1px solid #ccc;
@@ -105,9 +107,17 @@ body {
 .today-label { color: #298d9e; font-weight: bold; margin-right: 5px; }
 .today-icon { border: 1px solid #ddd; padding: 1px 4px; margin-right: 3px; cursor: pointer; border-radius: 2px; }
 
-.profile-img { width:100%; margin-bottom:10px; border: 1px solid #ccc; flex-shrink: 0; }
+/* ★ 프로필 사진 크기 제한 (이미지가 너무 길어지는 것 방지) ★ */
+.profile-img { 
+  width:100%; 
+  max-height: 200px; /* 높이 제한 */
+  object-fit: cover; /* 비율 유지하며 꽉 채우기 */
+  margin-bottom:10px; 
+  border: 1px solid #ccc; 
+  flex-shrink: 0; 
+}
 
-/* ★ 프로필 소개글 영역 (높이 제한 수정) ★ */
+/* ★ 프로필 소개글 (박스 제거, 흰 바탕에 글씨만) ★ */
 .profile-desc {
   width: 100%;
   text-align: left;
@@ -115,17 +125,16 @@ body {
   line-height: 1.4;
   margin-bottom: 10px;
   color: #333;
-  padding: 5px;
-  border: 1px dotted #ccc; /* 영역 구분선 추가 */
-  background: #f9f9f9;
+  padding: 2px;
+  
+  /* 박스 디자인 제거 */
+  border: none;
+  background: transparent;
+  
   white-space: pre-wrap; 
-  /* 높이 제한을 80px로 줄여서 너무 커지지 않게 함 */
-  max-height: 80px; 
-  overflow-y: auto; /* 내용 넘치면 스크롤 */
-  scrollbar-width: thin;
+  flex-shrink: 0; /* 글자가 찌그러지지 않도록 */
 }
 
-/* ★ 일촌 파도타기 드롭다운 ★ */
 .ilchon-select {
   width: 100%;
   margin-top: 10px;
@@ -134,6 +143,7 @@ body {
   font-size: 11px;
   border: 1px solid #ccc;
   color: #666;
+  flex-shrink: 0;
 }
 
 .main-content {
@@ -150,20 +160,19 @@ body {
   flex-shrink: 0;
 }
 
-/* ★ 여기가 중요! display:flex 필수 ★ */
 .content-area {
   flex-grow: 1;
   display: flex;           
   flex-direction: column;  
-  overflow: hidden;        
-  height: 100%;
+  overflow: hidden; 
+  height: 100%;    
 }
 
-/* 스크롤바 디자인 */
 .scroll-list {
   flex-grow: 1;           
   overflow-y: auto;       
   padding-right: 5px;     
+  min-height: 0;          
   scrollbar-width: thin;
   scrollbar-color: #8cc6d1 #f1f1f1;
 }
@@ -172,11 +181,12 @@ body {
 .scroll-list::-webkit-scrollbar-track { background: #f1f1f1; }
 
 .input-wrapper {
-  flex-shrink: 0;       
+  flex-shrink: 0;         
   margin-top: 10px;
   border-top: 2px solid #eee;
   padding-top: 10px;
   background: white;
+  z-index: 10;           
 }
 
 .guestbook-entry {
@@ -201,6 +211,7 @@ textarea {
   padding: 5px;
   margin-top: 10px;
   font-family: 'Umdot15', monospace;
+  resize: none; 
 }
 button {
   float:right;
@@ -325,16 +336,16 @@ input.comment-input {
       
       <div id="profile-desc" class="profile-desc"></div>
       
-      <div style="border-top:1px dotted #ccc; width:100%; margin: 10px 0;"></div>
+      <div style="border-top:1px dotted #ccc; width:100%; margin: 10px 0; flex-shrink: 0;"></div>
 
-      <p id="member-name" style="font-weight:bold; color:#3b5998; margin:0;"></p>
+      <p id="member-name" style="font-weight:bold; color:#3b5998; margin:0; flex-shrink: 0;"></p>
       <p id="bgm-title"></p>
       
       <select id="ilchon-status-bar" class="ilchon-select" disabled>
         <option>파도타기..</option>
       </select>
       
-      <div style="margin-top:auto; padding-top: 15px; font-size:12px; color:#999; padding-bottom: 5px;">
+      <div style="margin-top:auto; padding-top: 15px; font-size:12px; color:#999; padding-bottom: 5px; flex-shrink: 0;">
         TODAY <span style="color:red">281</span> | TOTAL 12,345
         <div style="margin-top:5px; font-size:11px; color:#3b5998;">
           찾은 도토己I: <span id="acorn-count">0</span>/3
@@ -344,10 +355,12 @@ input.comment-input {
 
     <div class="main-content">
       <div id="guestbook" class="content-area">
-        <div style="border-bottom:1px solid #ccc; padding-bottom:5px; margin-bottom:10px; color:#3b5998; font-weight:bold;">
+        <div style="border-bottom:1px solid #ccc; padding-bottom:5px; margin-bottom:10px; color:#3b5998; font-weight:bold; flex-shrink: 0;">
           방명록 (Guestbook)
         </div>
+        
         <div id="guestbook-list" class="scroll-list"></div>
+        
         <div class="input-wrapper">
           <textarea id="user-msg" placeholder="일촌 신청ṑト고 ＞ㅏへㅔ효..."></textarea>
           <button onclick="postMsg()">확인</button>
@@ -355,7 +368,7 @@ input.comment-input {
       </div>
 
       <div id="photos" class="content-area" style="display:none;">
-        <div style="border-bottom:1px solid #ccc; padding-bottom:5px; margin-bottom:10px; color:#3b5998; font-weight:bold;">
+        <div style="border-bottom:1px solid #ccc; padding-bottom:5px; margin-bottom:10px; color:#3b5998; font-weight:bold; flex-shrink: 0;">
           사진첩 (Photo)
         </div>
         <div id="photo-list" class="scroll-list"></div>
@@ -455,11 +468,9 @@ function foundAcorn(id) {
   }
 }
 
-// ★ 사진첩 스크롤 문제 해결 (block -> flex) ★
 function showTab(name){
   document.querySelectorAll('.menu-tab').forEach(t => t.classList.remove('active'));
   
-  // flex로 변경해야 스크롤이 정상 작동합니다.
   document.getElementById('guestbook').style.display = (name==='guestbook') ? 'flex' : 'none';
   document.getElementById('photos').style.display = (name==='photos') ? 'flex' : 'none';
   
@@ -754,6 +765,7 @@ function postMsg() {
   const id = "r-" + Date.now();
 
   entry.innerHTML = `<b>${myName}:</b> ${userMsg}<div class="ai-reply" id="${id}">...</div>`;
+  // ★ 입력한 글이 위로 쌓이게 (최신순)
   list.prepend(entry);
   msgInput.value = "";
 
