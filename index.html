@@ -2,16 +2,16 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 <title>☆-..- 2005년의 어느 날 -..-☆</title>
 
 <style>
 @font-face {
-  font-family: 'GalmuriCondensed';
-  src: url('fonts/GalmuriCondensed.woff2') format('woff2');
+  font-family: 'Umdot15';
+  src: url('fonts/Umdot15.woff2') format('woff2');
 }
 * {
-  font-family: 'GalmuriCondensed', monospace;
+  font-family: 'Umdot15', monospace;
   box-sizing: border-box;
 }
 :root {
@@ -20,8 +20,12 @@
   --tab-color:#298d9e;
 }
 body {
-  background:#b1b1b1; display:flex; justify-content:center;
-  padding-top:40px; margin:0;
+  background:#b1b1b1; 
+  display:flex; 
+  justify-content:center;
+  padding-top:40px; 
+  margin:0;
+  overflow-x: hidden;
   cursor: url('https://cur.cursors-4u.net/cursors/cur-2/cur117.cur'), auto;
 }
 
@@ -36,7 +40,10 @@ body {
   display: flex;
   align-items: flex-start;
   position: relative;
+  flex-shrink: 0; 
+  transform-origin: top center;
 }
+
 .white-box {
   background:white; 
   border-radius:8px;
@@ -79,12 +86,67 @@ body {
   width: 80px;
 }
 
-/* ===== 내부 요소 ===== */
+/* ===== 왼쪽 프로필 영역 ===== */
 .profile {
   width:28%; border-right:1px dashed #ccc;
   padding-right:15px; text-align:center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  overflow-y: auto;
+  scrollbar-width: none; 
 }
-.profile-img { width:100%; margin-bottom:10px; border: 1px solid #ccc; }
+.profile::-webkit-scrollbar { display: none; }
+
+.today-box {
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  padding: 5px;
+  margin-bottom: 10px;
+  text-align: left;
+  font-size: 12px;
+  background: #fff;
+  flex-shrink: 0; 
+}
+.today-label { color: #298d9e; font-weight: bold; margin-right: 5px; }
+.today-icon { border: 1px solid #ddd; padding: 1px 4px; margin-right: 3px; cursor: pointer; border-radius: 2px; }
+
+.profile-img { 
+  width:100%; 
+  max-height: 200px; 
+  object-fit: cover; 
+  margin-bottom:10px; 
+  border: 1px solid #ccc; 
+  flex-shrink: 0; 
+}
+
+.profile-desc {
+  width: 100%;
+  text-align: left;
+  font-size: 12px;
+  line-height: 1.4;
+  margin-bottom: 10px;
+  color: #333;
+  padding: 2px;
+  border: none;
+  background: transparent;
+  white-space: pre-wrap; 
+  flex-shrink: 0; 
+}
+
+.ilchon-select {
+  width: 100%;
+  margin-top: 10px;
+  padding: 3px;
+  font-family: 'Umdot15', monospace;
+  font-size: 11px;
+  border: 1px solid #ccc;
+  color: #666;
+  flex-shrink: 0;
+}
+
 .main-content {
   width:72%; padding-left:20px;
   display:flex; flex-direction:column;
@@ -95,31 +157,53 @@ body {
   color: #3b5998;
   margin-top: 5px;
   letter-spacing: -1px;
+  width: 100%;
+  flex-shrink: 0;
 }
+
 .content-area {
-  flex-grow:1;
-  overflow-y:auto;
-  padding-right: 5px;
+  flex-grow: 1;
+  display: flex;           
+  flex-direction: column;  
+  overflow: hidden; 
+  height: 100%;    
+}
+
+.scroll-list {
+  flex-grow: 1;           
+  overflow-y: auto;       
+  padding-right: 5px;     
+  min-height: 0;          
   scrollbar-width: thin;
   scrollbar-color: #8cc6d1 #f1f1f1;
 }
-.content-area::-webkit-scrollbar { width: 8px; }
-.content-area::-webkit-scrollbar-thumb { background: #8cc6d1; border-radius: 4px; }
-.content-area::-webkit-scrollbar-track { background: #f1f1f1; }
+.scroll-list::-webkit-scrollbar { width: 8px; }
+.scroll-list::-webkit-scrollbar-thumb { background: #8cc6d1; border-radius: 4px; }
+.scroll-list::-webkit-scrollbar-track { background: #f1f1f1; }
 
-/* ===== 방명록 ===== */
+.input-wrapper {
+  flex-shrink: 0;         
+  margin-top: 10px;
+  border-top: 2px solid #eee;
+  padding-top: 10px;
+  background: white;
+  z-index: 10;           
+}
+
 .guestbook-entry {
   background:#f6f6f6;
-  padding:10px;
-  margin-bottom:12px;
+  padding: 8px 10px; 
+  margin-bottom:10px;
   border-radius:5px;
   border: 1px dotted #ccc;
+  font-size: 13px; 
 }
 .ai-reply {
   color:#ff6600;
-  margin-top:6px;
+  margin-top:4px;
   border-top:1px dotted #ccc;
   padding-top:4px;
+  font-size: 12px; 
 }
 textarea {
   width:100%;
@@ -127,7 +211,8 @@ textarea {
   border: 1px solid #ccc;
   padding: 5px;
   margin-top: 10px;
-  font-family: 'GalmuriCondensed', monospace;
+  font-family: 'Umdot15', monospace;
+  resize: none; 
 }
 button {
   float:right;
@@ -136,12 +221,11 @@ button {
   border: 1px solid black;
   background: white;
   padding: 3px 10px;
-  font-family: 'GalmuriCondensed', monospace;
+  font-family: 'Umdot15', monospace;
   box-shadow: 1px 1px 0px #999;
 }
 button:active { box-shadow: none; transform: translate(1px, 1px); }
 
-/* ===== 사진첩 ===== */
 .photo-post {
   background:var(--bg-gray);
   padding:10px;
@@ -149,17 +233,26 @@ button:active { box-shadow: none; transform: translate(1px, 1px); }
   border: 1px solid #ccc;
 }
 .photo-post p { white-space: pre-wrap; line-height: 1.4; }
-.photo-post img { width:100%; margin-bottom:8px; border: 1px solid #ccc; }
+
+/* ★ 수정된 사진첩 이미지 CSS ★ */
+.photo-post img { 
+  width: auto;          /* 비율 유지를 위해 auto */
+  max-width: 100%;      /* 가로가 넘치지 않게 */
+  max-height: 400px;    /* 세로가 너무 길어지지 않게 제한 */
+  display: block;       /* 블록 요소로 변경 */
+  margin: 0 auto 10px auto; /* 가운데 정렬 */
+  border: 1px solid #ccc; 
+}
+
 .heart { cursor:pointer; color:#999; margin-right:8px; }
 .heart.active { color:red; }
 .comments { margin-top:8px; font-size:13px; }
 .comment { border-top:1px dotted #ccc; padding-top:4px; }
 input.comment-input {
   width:100%; margin-top:6px; border: 1px solid #ccc; padding: 3px;
-  font-family: 'GalmuriCondensed', monospace;
+  font-family: 'Umdot15', monospace;
 }
 
-/* ===== 숨겨진 도토리 ===== */
 .hidden-acorn {
   position: absolute;
   font-size: 20px;
@@ -173,7 +266,6 @@ input.comment-input {
 .hidden-acorn:hover { transform: scale(1.2); opacity: 1; }
 @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
 
-/* ===== 팝업(모달) ===== */
 .modal-overlay {
   display: none; position: fixed; top:0; left:0; width:100%; height:100%;
   background: rgba(0,0,0,0.5); z-index: 9999;
@@ -209,7 +301,7 @@ input.comment-input {
       <span style="cursor:pointer" onclick="closeModal('reward-modal')">X</span>
     </div>
     <div class="modal-body">
-      <h3>도토리 3개 발견!</h3>
+      <h3>도토己I 3개 발견!</h3>
       <p><b style="color:red">Secret Photo Unlocked</b></p>
       <img id="reward-img" src="" style="margin:10px 0; border:1px solid #ccc; width:100%;">
       <p style="font-size:11px; color:#999;">(너한테만 보여주는 사진이야♥)</p>
@@ -238,7 +330,7 @@ input.comment-input {
   </div>
 </div>
 
-<div class="wrapper">
+<div id="main-wrapper" class="wrapper">
   <div class="white-box">
     
     <div id="acorn-1" class="hidden-acorn" onclick="foundAcorn(1)">🌰</div>
@@ -246,41 +338,59 @@ input.comment-input {
     <div id="acorn-3" class="hidden-acorn" onclick="foundAcorn(3)">🌰</div>
 
     <div class="profile">
+      <div class="today-box">
+        <span class="today-label">TODAY IS..</span>
+        <span class="today-icon">☁️</span> <span id="today-mood">행복</span>
+      </div>
+
       <img id="profile-img" class="profile-img">
-      <p id="member-name"></p>
+      
+      <div id="profile-desc" class="profile-desc"></div>
+      
+      <div style="border-top:1px dotted #ccc; width:100%; margin: 10px 0; flex-shrink: 0;"></div>
+
+      <p id="member-name" style="font-weight:bold; color:#3b5998; margin:0; flex-shrink: 0;"></p>
       <p id="bgm-title"></p>
       
-      <div style="margin-top:20px; font-size:12px; color:#999;">
+      <select id="ilchon-status-bar" class="ilchon-select" disabled>
+        <option>파도타기..</option>
+      </select>
+      
+      <div style="margin-top:auto; padding-top: 15px; font-size:12px; color:#999; padding-bottom: 5px; flex-shrink: 0;">
         TODAY <span style="color:red">281</span> | TOTAL 12,345
-      </div>
-      <div style="margin-top:5px; font-size:11px; color:#3b5998;">
-        찾은 도토리: <span id="acorn-count">0</span>/3
+        <div style="margin-top:5px; font-size:11px; color:#3b5998;">
+          찾은 도토己I: <span id="acorn-count">0</span>/3
+        </div>
       </div>
     </div>
 
     <div class="main-content">
       <div id="guestbook" class="content-area">
-        <div style="border-bottom:1px solid #ccc; padding-bottom:5px; margin-bottom:10px; color:#3b5998; font-weight:bold;">
+        <div style="border-bottom:1px solid #ccc; padding-bottom:5px; margin-bottom:10px; color:#3b5998; font-weight:bold; flex-shrink: 0;">
           방명록 (Guestbook)
         </div>
-        <div id="guestbook-list"></div>
-        <textarea id="user-msg" placeholder="일촌 신청하고 가세효..."></textarea>
-        <button onclick="postMsg()">확인</button>
+        
+        <div id="guestbook-list" class="scroll-list"></div>
+        
+        <div class="input-wrapper">
+          <textarea id="user-msg" placeholder="일촌 신청ṑト고 ＞ㅏへㅔ효..."></textarea>
+          <button onclick="postMsg()">확인</button>
+        </div>
       </div>
 
       <div id="photos" class="content-area" style="display:none;">
-        <div style="border-bottom:1px solid #ccc; padding-bottom:5px; margin-bottom:10px; color:#3b5998; font-weight:bold;">
+        <div style="border-bottom:1px solid #ccc; padding-bottom:5px; margin-bottom:10px; color:#3b5998; font-weight:bold; flex-shrink: 0;">
           사진첩 (Photo)
         </div>
-        <div id="photo-list"></div>
+        <div id="photo-list" class="scroll-list"></div>
       </div>
     </div>
   </div>
 
   <div class="menu-container">
-    <div class="menu-tab" onclick="alert('준비중입니다!')">홈</div>
-    <div class="menu-tab" onclick="alert('준비중입니다!')">프로필</div>
-    <div class="menu-tab" onclick="alert('준비중입니다!')">다이어리</div>
+    <div class="menu-tab" onclick="alert('준비중입Ꮮㅣ㉰')">홈</div>
+    <div class="menu-tab" onclick="alert('준비중입Ꮮㅣ㉰')">프로필</div>
+    <div class="menu-tab" onclick="alert('준비중입Ꮮㅣ㉰')">다이어리</div>
     <div id="tab-photos" class="menu-tab" onclick="showTab('photos')">사진첩</div>
     <div id="tab-guestbook" class="menu-tab active" onclick="showTab('guestbook')">방명록</div>
   </div>
@@ -296,6 +406,24 @@ let guestbookCount = 0;
 function closeModal(id) {
   document.getElementById(id).style.display = 'none';
 }
+
+/* ★ 모바일 자동 스케일링 ★ */
+function adjustScale() {
+  const wrapper = document.getElementById('main-wrapper');
+  const winWidth = window.innerWidth;
+  const targetWidth = 940; 
+
+  if (winWidth < targetWidth) {
+    const scale = winWidth / targetWidth;
+    wrapper.style.transform = `scale(${scale})`;
+    document.body.style.height = `${550 * scale + 50}px`; 
+  } else {
+    wrapper.style.transform = 'none';
+    document.body.style.height = 'auto';
+  }
+}
+
+window.addEventListener('resize', adjustScale);
 
 /* ===== 1. 자동 일촌 신청 메시지 ===== */
 const ilchonMessages = {
@@ -321,9 +449,17 @@ function triggerIlchonRequest() {
 function acceptIlchon() {
   alert(`[${currentMember.name}] 님과 일촌이 되었습니다!\n\n일촌명: ${myName} ❤️ ${currentMember.name}`);
   closeModal('ilchon-modal');
+  
+  const select = document.getElementById('ilchon-status-bar');
+  if(select) {
+    select.innerHTML = `<option>★ 일촌 (${myName})</option>`;
+    select.style.color = "blue";
+    select.style.fontWeight = "bold";
+    select.disabled = false;
+  }
 }
-
-/* ===== 2. 도토리 찾기 ===== */
+  
+/* ===== 2. 도토己I 찾기 ===== */
 let foundCount = 0;
 
 function scheduleAcorns() {
@@ -356,21 +492,23 @@ function foundAcorn(id) {
       if(!bgm.paused) bgm.volume = 1.0; 
     }, 300);
   } else {
-    alert(`도토리를 찾았다! (${foundCount}/3)\n남은 도토리가 나올 때까지 기다려보세요!`);
+    alert(`도토己I를 찾았다! (${foundCount}/3)\n남은 도토己I가 나올 때까지 기다려보세요!`);
   }
 }
 
 function showTab(name){
   document.querySelectorAll('.menu-tab').forEach(t => t.classList.remove('active'));
-  document.getElementById('guestbook').style.display = name==='guestbook'?'block':'none';
-  document.getElementById('photos').style.display = name==='photos'?'block':'none';
+  
+  document.getElementById('guestbook').style.display = (name==='guestbook') ? 'flex' : 'none';
+  document.getElementById('photos').style.display = (name==='photos') ? 'flex' : 'none';
+  
   document.getElementById('tab-' + name).classList.add('active');
 }
 
-/* ===== 3. 성격별 말투 (문법 오류 수정됨) ===== */
+/* ===== 3. 성격별 말투 ===== */
 const replyTemplates = {
   isfp: {
-    normal: ["아.. 안녕? ㅎㅎ", "왔나..", "글 남겨줘서 고맙디..///", "나 그냥.. 이어폰 꽂고 침대에 누워 있는데.. MP3 배터리 다 돼가네..", "기타 줄 가는 중.. 이번 축제 때 나갈 거 연습해야 돼서"],
+    normal: ["ㅇ ㅏ.. 안녕? ㅎㅎ", "왔나..", "글 남겨줘서 고맙디..///", "나 그냥.. 이어폰 꽂고 침대에 누워 있는데.. MP3 배터리 다 돼가네..", "기타 줄 가는 중.. 이번 축제 때 나갈 거 연습해야 돼서"],
     love: ["어? 어..", "그런 말 하면.. 부끄러운데..", "얼굴 빨개졌다이가.. 책임지라.."],
     sad: ["무슨 일 있나? ㅠㅠ", "울지 마라.. 내도 슬퍼지네..", "토닥토닥.."],
     rumor: ["어? 그거 내 아니다.. ㅠㅠ", "그거 진짜 아인데..", "누가 그라는데?", "오해하지 마라.."],
@@ -391,11 +529,17 @@ const replyTemplates = {
     friend: ["음.. 생각 좀 해보고", "친해지면 받아줌", "일단 신청해 놔 ㅋㅋ", "겜 할 때 들어와라"]
   },
   cool_playful: {
-    normal: ["안녕~ 근데 빈손이야?", "나 지금 너한테 답글 남기는 중이지ㅋㅋ", "왔으면 발도장 꾹! ㅋㅋ", "나 지금 피아노 칠까 말까 고민 중 ㅋㅋ 귀찮네~", "비밀인데. 궁금해? 궁금하면 500원 ㅋㅋ", "ㅋㅋㅋ 반갑다"],
+    normal: ["안녕~ 근데 빈손이야?ㅋㅋ", `?ㅏㄴㅕ
+ ㄴ    ?`, "나 지금 너한테 답글 남기는 중이지ㅋㅋ", "왔으면 발도장 꾹! ㅋㅋ", "나 지금 피아노 칠까 말까 고민 중 ㅋㅋ 귀찮네~", "비밀인데. 궁금해? 궁금하면 500원 ㅋㅋ", "ㅋㅋㅋ 반갑다"],
     love: ["오~ 감당 가능? ㅋㅋ", "장난치지 마라~ 설렌다?", "ㅋㅋㅋ 귀엽네 이거"],
     sad: ["에이 왜 우울해~ 웃자", "무슨 일인데? 들어는 줄게", "심각해지지 말자~"],
     rumor: ["비밀인데 어떻게 알았대?", "에이~ 설마~", "너 나 질투해? ㅋㅋ", "글쎄다~?"],
-    friend: ["일촌? 맛있는 거 사주면 ㅋㅋ", "콜! 대신 자주 와라", "너 하는 거 봐서~ ㅋㅋ", "오냐 받아줌"]
+    friend: ["일촌? 맛있는 거 사주면 ㅋㅋ", "콜! 대신 자주 와라", "너 하는 거 봐서~ ㅋㅋ", "오냐 받아줌", `
+    ●  한!
+☜=━╋┓턱!
+        ☜=┛쏴!
+      ┏┻┓^^ㆀ
+   빵!!!!!!!!!!`]
   },
   intj: {
     normal: ["왔어ㅎㅎ?", "오 안녕~", "ㅎㅎ밥 먹었어?", "오 글 남겨줘서 고마워ㅎㅎ 기분 좋다", "처음 보는 이름이네ㅋㅋ반가워", "오늘 하루는 어땠어?"],
@@ -412,104 +556,299 @@ const replyTemplates = {
     friend: ["오! 죠앙 오늘부터 우리 베프얌 >_<", "웅 나랑 매점 메이트 하자! 맛잇는고 알려줘 ㅎㅎ", "웅 앞으로도 방명록 자주 써줘야 돼? 약속!", "やった! 친구 생겨떠 ㅎㅎ 나 한국말 많이 가르쳐줭"]
   },
   istp_eunseok: {
-    normal: ["돌멩이 어서오고", "왕이 넘어지면? 킹콩 ㅋ", "숨쉬기 운동 하자 흡..하..흡..하..", "지금 돌멩이 관찰 중.. 얘는 왜 이렇게 생겼을까?", "텔레파시 보내는 중이었는데 받음? 찌리릿."],
+    normal: ["돌멩이 어서오고", `너 좀 ㅁト음øłl 든⊂ト`, "왕이 넘어지면? 킹콩 ㅋ", "숨쉬기 운동 하자 흡..하..흡..하..", "지금 돌멩이 관찰 중.. 얘는 왜 이렇게 생겼을까?", "텔레파시 보내는 중이었는데 받음? 찌리릿."],
     love: ["너 나 좋아하냐? 보는 눈은 있어가지고", "부끄럽게 왜 이래.. (귀 빨개짐)", "칭찬 알러지 있음.."],
-    sad: ["울면 산타 할아버지가 선물 안 준대", "뚝 그쳐라", "바나나 먹으면 나한테 반하나? ㅋㅋ(위로임)"],
+    sad: ["울면 산타 할아버지가 선물 안 준대", "뚝 그쳐라", "바나나 먹으면 나한테 반하나? ㅋㅋ(위로임)", `★＼＼＼＼＼＼★
+＼★＼＼＼＼★＼
+＼＼★＼＼★＼＼
+＼＼＼★★＼＼＼
+행운의 브๐ㅣV`],
     rumor: ["오잉ㅋㅋ?", "소문은 소문일 뿐 오해하지 말자~", "쉿, 국가 기밀임", "내가 좀 잘생긴 죄가 크지"],
     friend: ["일촌? 이촌은 안 되나 ㅋㅋ", "나랑 친구하려면 돌씨로 성을 바꿔야하는데 괜찮겠니? (농담임ㅋ)", "친구비 입금해 500원", "그래 친구 하자", "돌멩이 추가요"]
   }
 };
 
-/* ===== 4. 멤버별 데이터 설정 (문법 오류 수정됨) ===== */
+/* ===== 4. 멤버별 데이터 설정 ===== */
 const members = [
   {
     name: "박원빈",
+    desc: "‥*♡* 오늘도 행복한 하루가 되시길... *♡*‥",
+    mood: "센치함",
     img: "wonbin_profile.png",
     bgm: { title: "RIIZE - Love 119", src: "bgm_wonbin.mp3" },
     replies: replyTemplates.isfp,
     secretPhoto: "wonbin3.png",
     photos: [
       { img: "wonbin_guitar.png", text: "오늘 연습 끝..\n손가락 물집 잡혔다 ㅠㅠ\n그래도 재밌네 역시", hearts: 1004 },
-      { img: "wonbin1.png", text: "오늘도 화이팅..!", hearts: 850 }
+      { text: `이 결심이 오래지속되서
+그 결실을 이뤄냈을때
+내가 이 글을 보면서
+뿌듯해질 수 있기를 바래야지 뭐.
+
+응 나 할 수 있어
+그동안 내가 소심해져서 도전하지 못한것들 막 그런거 있잖아
+그냥 내 탓이 아니라고 손 놓고 있었잖아
+
+난 끈기 없는애라 생각했는데 난 끈기 있는 사람이야
+난 용기 없는애라 생각했는데 난 용기 있는 사람이야
+난 인애 없는애라 생각했는데 난 인내 있는 사람이야
+
+이제 나를 칭찬해 줄 차례야.`, hearts: 542 },
+      { img: "wonbin2.png", text: `아프니깐 속상하고 눈물이 났다
+건강한 내가 입원해서 사람들을 놀리키고
+놀라서 달려와준 주위 사람들에게 고마웠던날`, hearts: 1920 },
+      { img: "wonbin1.png", text: "오늘도 호rØl팅..!", hearts: 850 }
     ]
   },
   {
     name: "리쿠",
+    desc: "모찌 먹고 싶다..\n한국어 공부 중!\n일촌 걸어죠 >_<",
+    mood: "기쁨",
     img: "riku_profile.png",
     bgm: { title: "NCT WISH - SAIL AWAY", src: "bgm_riku.mp3" },
     replies: replyTemplates.isfp_riku,
     secretPhoto: "riku3.png",
     photos: [
       { img: "riku1.png", text: ">_<", hearts: 808 },
-      { img: "riku2.png", text: "시온군이 찍어줘써ㅎㅎ", hearts: 1007 },
-      { img: "riku4.png", text: "오랜만에 일본!", hearts: 2321 },
+      { text: `38317 :거꾸로 LIEBE 독일어로 '사랑'
+4444 :사랑하는 사람이 사랑하는 사람에게
+2514 :이 세상에서 오직 하나밖에 없는사람
+012486 : 비밀번호 '영원히 사랑해'
+522 : 비밀번호 '보고싶다' (S22=SEE)
+0242 : 비밀번호 '연인사이'
+532 : 다(5) 드리(three) e(2)`, hearts:  2314 },
+      { text: `보고 싶다..
+
+사랑하는 사람들은 보고싶다'는 말을 좋아한다..
+
+'보고 싶다'는 말에는 수많은 의미가 담겨 있다..
+
+'보고 싶다'는 말은 사랑이 시작되었음을 알려주는 말이다..
+'보고 싶다'는 말은 사랑하고 있다는 증거이다..
+'보고 싶다'는 순수한 애정의 표현이다..
+'보고 싶다'는 말은 사랑의 고백이다..
+'보고 싶다'는 '사랑한다'이다.....
+
+- 용혜원의 사랑하니까`, hearts: 999 },
+      { img: "riku2.png", text: "ハㅣ온군이 찍어줘써ㅎㅎ", hearts: 1007 },
+      { img: "riku4.png", text: `그사람은 정말 바보인가봐요.
+
+제가몇년째 보고있는데
+몇년째 그사람만사랑하는데
+그걸모르고 혼자 잘살아가잖아요
+나는 매일매일 눈물흘리는데...`, hearts: 2321 },
       { img: "riku5.png", text: "모찌 먹고찌퍼..", hearts: 777 }
     ]
   },
   {
     name: "백준혁",
+    desc: "내 패션 쩔지ㅋ\n일촌 신청 안 하면\n바보 멍충이😛",
+    mood: "간지",
     img: "jun_profile.png",
     bgm: { title: "ID:Earth - Betelgeuse", src: "bgm_jun.mp3" },
     replies: replyTemplates.entp,
     secretPhoto: "jun2.png",
     photos: [
-      { img: "jun1.png", text: "새벽 감성..\n이 노래 쥑이네\n다들 들어봐라", hearts: 520 },
-      { img: "jun3.png", hearts: 520 },
-      { img: "jun4.png", hearts: 520 }
+      { img: "jun1.png", text: `이제 독하게 살 준비를 해야한다.
+
+
+그전에 좀 아파야겠지.`, hearts: 1123 },
+      { img: "jun3.png", text: `학생이라는 죄로
+학교라는 교도소에서
+교실이라는 감옥이 갇혀
+출석부라는 죄수명단에올라
+교복이란 죄수복을 입고
+공부란 벌을 받고
+졸업이란 석방을 기다린다`, hearts: 2320 },
+      { img: "jun4.png", hearts: 889 }
     ]
   },
   {
     name: "이소희",
+    desc: "노래 부르는 게\n세상에서 젤 좋아♬\n나랑 듀엣 할 사람?",
+    mood: "노래중",
     img: "so4.png",
     bgm: { title: "RIIZE - Get A Guitar", src: "bgm_sohee.mp3" },
     replies: replyTemplates.istp_sohee,
     secretPhoto: "so1.png",
     photos: [
-      { img: "so2.png", text: "노래 연습 중.. 🎶\n목이 좀 아프네 ㅠ\n그래도 고음 뚫었다!!", hearts: 1121 },
-      { img: "so4.png", text: "새로 산 모자 어때?\n좀 힙한가? ㅋㅋ", hearts: 990 },
-      { img: "so3.png", text: "구름이 몽글몽글\n오리 같아 🐤", hearts: 880 }
+      { img: "so2.png", text: `난 지금 미쳐가고있다
+이 헤드폰에 내 모든 몸과
+영혼을 맡겼다
+
+음악만이 나라에서 허락하는
+유일한 마약이니까
+
+이게 바로 지금의 나다`, hearts: 1121 },
+      { text: `<b><span style='color:red'>행복</span></b>해도 돼
+<b><span style='color:red'>꼭</span></b> 그래야 돼
+
+그것만 믿고 널 보내는 나니까..
+마지막 인사로 이 말만 해줘
+조금은 <b><span style='color:red'>사랑했었다고</span></b>
+
+-SG워너비, 죄와벌-
+`, hearts: 467},
+      { img: "so4.png", text: "새로 산 모자 어때?\n좀 hiphoper같은가? ㅋㅋ", hearts: 990 },
+      { text: `목이 갈라지고 찢어질것만 같았다
+내손의 마이크를 던져버리고 싶었다
+줄을 가위로자르고
+기름을 뿌리고 불을질러 한줌의 재로만들고싶다
+그런데 그보다 더한열망은
+그들에게 지고싶지 않다
+<b>나도몰랏던 내안의 순수한열정</b>`, hearts: 234 },
+      { text: `<span style='color:red'>'괜찮으니까'</span>
+
+그 남자애랑 잘 지내다가
+내가 좋아지면 그때 와
+`, hearts: 542 },
+      { img: "so3.png", text: `┃  ┣┃-* ☆
+┗-*┃┃맘속엔
+네가있는데..
+┃ ┫┃ -* ☆
+┗ ┃┃맘속엔
+내가있니?`, hearts: 880 }
     ]
   },
   {
     name: "안건호",
+    desc: "뭘봐ㅋ",
+    mood: "자신감",
     img: "gun_profile.png",
     bgm: { title: "Kortis - Timeless", src: "bgm_geon.mp3" },
     replies: replyTemplates.cool_playful,
     secretPhoto: "gun3.png",
     photos: [
-      { img: "gun1.png", text: "피아노.. 어렵다 ㅋㅋ\n근데 내가 치니까 좀 멋있는 듯?", hearts: 303 },
-      { img: "gun2.png", text: "엄질머리랑ㅋ", hearts: 303 },
-      { img: "gun5.png", text: "귀요미", hearts: 303 },
-      { img: "gun7.png", text: "엽사 올리려다 참는다\n내 이미지 보호해야지 ㅋㅋ", hearts: 250 }
+      { img: "gun1.png", text: `니가 오해할까봐 그러는데
+나 아무한테나 그러지않아
+나 아무한테나 마음주고
+아무나 기다리고
+아무한테나 연락하고
+아무한테나 웃어주고
+아무나 손잡고
+아무나 따라가고
+아무한테나 좋아한다 말하고
+아무한테나 보고싶다 말하고
+아무한테나 나는 그렇지 않아`, hearts: 3455 },
+      { img: "gun2.png", text: "엄질머리랑ㅋ", hearts: 2311 },
+      { img: "gun5.png", text: `
+      나 완전히~~~~~~~~~~ ♪
+┏(-.-)┓ ㅅㅐ 돼　ㅇㅓ 
+　 / ＼　　　 ㅆ`, hearts: 702 },
+      { img: "gun7.png", text: `나에게 달라붙는 여자들..
+Coldy한 나
+언제나 Solo를 추구하는 나는
+나만의 세계속에서 나만의 시간을 갖는다
+귀찮은 Girl들 귀찮은 Boy들..
+날 내버려둬,, 나는
+진정한 도시의남자.`, hearts: 897 }
     ]
   },
   {
     name: "오시온",
+    desc: "오늘도 평화로운 하루..\n커피 한 잔의 여유☕",
+    mood: "여유",
     img: "sion_profile.png",
     bgm: { title: "NCT WISH - WISH", src: "bgm_sion.mp3" },
     replies: replyTemplates.intj,
     secretPhoto: "sion6.png",
     photos: [
       { img: "sion1.png", text: "by 리쿠", hearts: 707 },
-      { img: "sion2.png", hearts: 707 },
-      { img: "sion4.png", text: "ㅎㅎ", hearts: 302 },
-      { img: "sion7.png", text: "염색해쓰", hearts: 707 },
-      { img: "sion8.png", hearts: 1092 },
+      { img: "sion2.png", text: `내가 열수있는건 여기까지
+내 마음을 보여줄수있는건 거기까지
+
+더이상 들어오려고 하지마`, hearts: 707 },
+      { img: "sion4.png", text: `세상엔 힘들때가 한두번이 아니지..
+그러니 힘들땐 나처럼 웃어봐..
+나도 이렇게 항상 웃고있잖아..?ㅎ
+힘내!!`, hearts: 302 },
+      { img: "sion8.png", text: `답답할때.....
+바람 맞으며... 하늘보는게 좋다....
+언제부턴가 바람 맞으면 좋아졌다.
+자유롭게 다니는 이 세상에 구속받지 않고 자유로이..
+다니는 바람이...부럽다...
+난 바람처럼 살아보고싶다...
+진실된 행복은 무었인가?
+자유로운거?돈이많은거?행복한거?물론 사람마다 다르겠지만
+내 가치관에서 봤을때 자신이 한개씩 가지고 있을만한...
+작지만 큰 소원을 이뤄보는거.. 이룰때 성취감 그 후에 즐거움 이라 생각한다..`, hearts: 707 },
+      { img: "sion7.png", text: `그녀를 위해 FECE관리`, hearts: 1092 },
       { img: "sion5.png", text: "오늘은 좀 나쁜남자ㅎ", hearts: 1002 },
-      { img: "sion3.png", text: "흠", hearts: 900 }
+      { img: "sion3.png", text: `北이 미사일을 발사했어
+나는 두렵지않을꺼야 오늘은 식목일..
+평소때 처럼 그냥 싸이에서 추억이나 보면서
+나무나 심으면서 그렇게 지낼거니까
+마지막 순간까지 <b>당신과함께..</b>`, hearts: 900 }
     ]
   },
   {
     name: "송은석",
+    desc: "돌멩이는 굴러가고\n나는 생각한다.\n고로 나는 존재한다.",
+    mood: "멍...",
     img: "dol_profile.png",
     bgm: { title: "RIIZE - Memories", src: "bgm_eunseok.mp3" },
     replies: replyTemplates.istp_eunseok,
     secretPhoto: "dol2.png",
     photos: [
       { img: "dol1.png", text: "돌찬영과", hearts: 435 },
-      { img: "dol4.png", hearts: 1394 },
-      { img: "dol5.png", hearts: 1394 },
-      { img: "dol3.png", text: "역시 이건 좀ㅋ.. 오반가", hearts: 333 }
+      { text: `온몸이 쑤시네...
+오늘도 어김없는 비오는 아침..
+오늘 난 한가지를 잘한거 같애..
+후회없는...거짓없는...
+한번의 실수는 용납될수있어두..
+그이상은...
+절대....<span style='color:red'>naver</span>`, hearts: 342 },
+      { img: "dol4.png", text: `나는 사실 인맥이 그리 넓은 편은 아니다
+
+
+
+나는 히딩크 감독님과 전화통화를 해 본 적이 있고
+힐러리더프와 뉴욕에서 쇼핑을 해 봤으며
+자미로콰이와 샴페인도 마셨봤고(그의 아버지가 날 유독 좋아했다)
+토코로 조지는 저녁식사에 날 초대해주었다
+
+
+
+
+
+
+그.러.나
+
+그들과 나는 일촌이 아니다......`, hearts: 2076 },
+      { img: "dol5.png", text: `내가 아침에 버스에 올라타서
+"두명이요"하고 교통카드를 찍자
+아저씨가 의아해하면서
+넌 혼자탔는데 왜 두명 몫을 찍냐고 묻는거야
+그래서 난 이렇게 말했지
+"내 가슴 속에는 부희주라는 한 사람이 더 있거든요.."
+추운 아침이었지만 나의 뜨거운 가슴으로
+버스안을 훈훈하게 데웠던 순간이었다..`, hearts: 1394 },
+      { img: "dol3.png", text: "역시 이건 좀ㅋ.. 오반가", hearts: 333 },
+      { text: `고도의 과학발달로 인하여
+서울에서는 사람들이 지하에서 이동을한다.
+
+무슨 언더시티도 아니고
+대부분은 말이 안된다고 하겠지만,
+인정할 순 없겠지만,
+ 사실이다...
+
+하지만 난 도시남자
+서울인들과 같이
+나또한 지하철을 이용하였다.
+
+지하철을 탈 때에는 꼭 신발을 벗고 타야되며
+(신발은 의자같이 생긴곳에 올려놓으면된다)
+
+사람들에게 관심받고 싶으면 어르신들께 자리양보하면 된다.
+
+또한 서 있을때에는 손잡이를 절대 잡아선 안된다.
+
+그리고 무엇보다 놀라운것은,
+대형할인점보다 엄청나게 싼 물건들이 많다는 것이다.
+원래는 2만원하는 가죽장갑을 3천원에 팔았나...
+
+문명의 발달, 지하세계의 개척
+그곳은 바로 씨티오브도시- 서울`, hearts: 112 }
     ]
   }
 ];
@@ -523,13 +862,21 @@ window.onload = () => {
   document.getElementById("profile-img").src = currentMember.img;
   document.getElementById("member-name").innerText = currentMember.name + "의 미니홈피";
   
+  if(document.getElementById("profile-desc")) {
+    document.getElementById("profile-desc").innerText = currentMember.desc || "안녕하세요!";
+  }
+  if(document.getElementById("today-mood")) {
+    document.getElementById("today-mood").innerText = currentMember.mood || "행복";
+  }
+  
   const bgm = document.getElementById("bgm");
   bgm.src = currentMember.bgm.src;
   document.getElementById("bgm-title").innerHTML = 
-    "<marquee scrollamount='3'>🎵 BGM: " + currentMember.bgm.title + "</marquee>";
+    "<marquee scrollamount='3'> ☆-..- 🎵 BGM: " + currentMember.bgm.title + " -..-☆ </marquee>";
 
   renderPhotos(currentMember.photos);
   scheduleAcorns();
+  adjustScale(); // 로드시 스케일링 실행
 };
 
 function renderPhotos(photoList) {
@@ -543,7 +890,7 @@ function renderPhotos(photoList) {
     const el = document.createElement('div');
     el.className = 'photo-post';
     el.innerHTML = `
-      <img src="${p.img}">
+      <img src="${p.img || ''}" style="${!p.img ? 'display:none;' : ''}">
       <p>${(p.text || "").replace(/\n/g, '<br>')}</p>
       <span class="heart" onclick="toggleHeart(this, ${idx})">♥</span>
       <span id="heart-${idx}">${p.hearts}</span>
@@ -562,7 +909,7 @@ function toggleHeart(el, idx) {
   countSpan.innerText = el.classList.contains('active') ? currentVal + 1 : currentVal - 1;
 }
 
-const prefixes = ["★베프★", "내사랑", "ㅇㅇㅈjang", "겸둥이", "단짝", "팬1호"];
+const prefixes = ["㉧ㅣ뿌LI♡", "갅지삘", "≥∇≤love♡", "★㉡ㅓ★를_죠와하는_", "구ı얌둥ㅇı", "[세계최강]", "♡ㅇroI엠 쏠로", "원조공쥬병☆", "ベドzb스러운", "엔젤™♡"];
 function addComment(idx, input) {
   if (!input.value.trim()) return;
   const randomPrefix = prefixes[Math.floor(Math.random() * prefixes.length)];
@@ -585,6 +932,7 @@ function postMsg() {
   const id = "r-" + Date.now();
 
   entry.innerHTML = `<b>${myName}:</b> ${userMsg}<div class="ai-reply" id="${id}">...</div>`;
+  // ★ 입력한 글이 위로 쌓이게 (최신순)
   list.prepend(entry);
   msgInput.value = "";
 
@@ -637,7 +985,7 @@ function postMsg() {
     }
     if (currentMember.name === "송은석") {
       if (text.includes("돌멩이")) { document.getElementById(id).innerText = `ㄴ 송은석: 굴러가유~ 데굴데굴`; return; }
-      if (text.includes("개그해줘")) { document.getElementById(id).innerText = `ㄴ 송은석: 중국집의 현재 시각은? ..............................짜장면 배달시키신 분 ㅋ`; return; }
+      if (text.includes("개그해줘")) { document.getElementById(id).innerText = `ㄴ 송은석: 중국집의 현재 시각은? ...............짜장면 배달시키신 분 ㅋ`; return; }
     }
     if (currentMember.name === "이소희") {
       if (text.includes("노래해줘")) { document.getElementById(id).innerText = `ㄴ 이소희: 흠흠! 목 좀 풀고~ 🎤 신청곡 받아요!`; return; }
@@ -663,7 +1011,7 @@ function postMsg() {
     // 4. 일반 분류
     let type = "normal";
     if (text.includes("소문") || text.includes("들었어") || text.includes("봤어") || text.includes("진짜야")) type = "rumor";
-    else if (text.includes("친구") || text.includes("친해") || text.includes("베프") || text.includes("일촌") || text.includes("연락") || text.includes("놀자")) type = "friend";
+    else if (text.includes("친구") || text.includes("친해") || text.includes("베프") || text.includes("일촌") || text.includes("연락") || text.includes("칭긔") ||  text.includes("칭구") ||  text.includes("놀자")) type = "friend";
     else if (text.includes("사랑") || text.includes("좋아") || text.includes("사귀자") || text.includes("내꺼") || text.includes("결혼")) type = "love";
     else if (text.includes("힘들") || text.includes("슬퍼") || text.includes("우울") || text.includes("눈물")) type = "sad";
 
@@ -681,9 +1029,6 @@ window.addEventListener("click", () => {
 </script>
 </body>
 </html>
-
-
-
 
 
 
