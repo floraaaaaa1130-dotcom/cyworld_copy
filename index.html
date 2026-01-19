@@ -495,6 +495,12 @@ function closeModal(id) {
   document.getElementById(id).style.display = 'none';
 }
 
+  /* ★ 커스텀 알림창 함수 (alert 대체) ★ */
+function showAlert(msg) {
+  document.getElementById('alert-msg').innerText = msg;
+  document.getElementById('alert-modal').style.display = 'flex';
+}
+
 /* ★ 1. 입장하기 기능 (BGM 자동재생 트리거) ★ */
 function enterSite() {
   const input = document.getElementById('nickname-input');
@@ -559,7 +565,8 @@ function triggerIlchonRequest() {
 }
 
 function acceptIlchon() {
-  alert(`[${currentMember.name}] 님과 일촌이 되었습니다!\n\n일촌명: ${myName} ❤️ ${currentMember.name}`);
+  // ★ 여기도 alert 대신 showAlert 사용
+  showAlert(`[${currentMember.name}] 님과 일촌이 되었습니다!\n\n일촌명: ${myName} ❤️ ${currentMember.name}`);
   closeModal('ilchon-modal');
   
   const select = document.getElementById('ilchon-status-bar');
@@ -604,7 +611,8 @@ function foundAcorn(id) {
       if(!bgm.paused) bgm.volume = 1.0; 
     }, 300);
   } else {
-    alert(`도토己I를 찾았다! (${foundCount}/3)\n남은 도토己I가 나올 때까지 기다려보세요!`);
+    // ★ 여기도 alert 대신 showAlert 사용
+    showAlert(`도토己I를 찾았다! (${foundCount}/3)\n남은 도토己I가 나올 때까지 기다려보세요!`);
   }
 }
 
@@ -1233,6 +1241,7 @@ window.addEventListener("click", () => {
 </script>
 </body>
 </html>
+
 
 
 
