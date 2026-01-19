@@ -647,7 +647,7 @@ const members = [
   },
   {
     name: "백준혁",
-    desc: "내 패션 쩔지ㅋ\n일촌 신청 안 하면\n바보 멍충이😛",
+    desc: "내 패션 쩔지ㅋ\n친해지고싶음 일촌 신청 ㄱㄱ",
     mood: "간지",
     img: "jun_profile.png",
     bgm: { title: "프리스타일 - Y(Please Tell Me Why)", src: "bgm_eunseok.mp3" },
@@ -949,6 +949,9 @@ function postMsg() {
   setTimeout(() => {
     const text = userMsg.replace(/\s/g, "").toLowerCase();
     
+    // ★ 여기가 핵심: 매번 normal로 초기화해야 "뭐해" 입력 후 다른 말을 해도 doing이 안 나옴!
+    let type = "normal";
+    
     // 1. 여친/짝사랑 질문
     if (
       text.includes("여친있") || text.includes("여자친구있") || text.includes("좋아하는사람있") || 
@@ -1053,3 +1056,4 @@ window.addEventListener("click", () => {
 </script>
 </body>
 </html>
+
