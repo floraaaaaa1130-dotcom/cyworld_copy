@@ -25,7 +25,6 @@ body {
   justify-content:center;
   padding-top:40px; 
   margin:0;
-  /* 모바일에서 스크롤 튀는 현상 방지 */
   overflow-x: hidden;
   cursor: url('https://cur.cursors-4u.net/cursors/cur-2/cur117.cur'), auto;
 }
@@ -35,15 +34,14 @@ body {
   background:var(--main-blue);
   padding: 20px 0px 20px 20px; 
   border-radius:10px;
-  width:900px; /* 고정 크기 */
-  height:550px; /* 고정 크기 */
+  width:900px;
+  height:550px;
   border: 1px solid black;
   display: flex;
   align-items: flex-start;
   position: relative;
-  /* ★ 핵심: 화면이 줄어들어도 절대 찌그러지지 않게 고정 ★ */
   flex-shrink: 0; 
-  transform-origin: top center; /* 축소 시 기준점 */
+  transform-origin: top center;
 }
 
 .white-box {
@@ -235,7 +233,17 @@ button:active { box-shadow: none; transform: translate(1px, 1px); }
   border: 1px solid #ccc;
 }
 .photo-post p { white-space: pre-wrap; line-height: 1.4; }
-.photo-post img { width:100%; margin-bottom:8px; border: 1px solid #ccc; }
+
+/* ★ 수정된 사진첩 이미지 CSS ★ */
+.photo-post img { 
+  width: auto;          /* 비율 유지를 위해 auto */
+  max-width: 100%;      /* 가로가 넘치지 않게 */
+  max-height: 400px;    /* 세로가 너무 길어지지 않게 제한 */
+  display: block;       /* 블록 요소로 변경 */
+  margin: 0 auto 10px auto; /* 가운데 정렬 */
+  border: 1px solid #ccc; 
+}
+
 .heart { cursor:pointer; color:#999; margin-right:8px; }
 .heart.active { color:red; }
 .comments { margin-top:8px; font-size:13px; }
@@ -399,17 +407,15 @@ function closeModal(id) {
   document.getElementById(id).style.display = 'none';
 }
 
-/* ★ 모바일 자동 스케일링 (화면이 작으면 축소) ★ */
+/* ★ 모바일 자동 스케일링 ★ */
 function adjustScale() {
   const wrapper = document.getElementById('main-wrapper');
   const winWidth = window.innerWidth;
-  const targetWidth = 940; // 여백 포함 대략적 너비
+  const targetWidth = 940; 
 
   if (winWidth < targetWidth) {
     const scale = winWidth / targetWidth;
-    // 축소 적용 (상단 중앙 기준)
     wrapper.style.transform = `scale(${scale})`;
-    // 축소된 만큼 body 높이 조정 (여백 제거)
     document.body.style.height = `${550 * scale + 50}px`; 
   } else {
     wrapper.style.transform = 'none';
@@ -417,7 +423,6 @@ function adjustScale() {
   }
 }
 
-// 화면 크기 변경 시마다 재계산
 window.addEventListener('resize', adjustScale);
 
 /* ===== 1. 자동 일촌 신청 메시지 ===== */
@@ -868,7 +873,7 @@ function postMsg() {
     // 4. 일반 분류
     let type = "normal";
     if (text.includes("소문") || text.includes("들었어") || text.includes("봤어") || text.includes("진짜야")) type = "rumor";
-    else if (text.includes("친구") || text.includes("친해") || text.includes("베프") || text.includes("일촌") || text.includes("연락") || text.includes("놀자")) type = "friend";
+    else if (text.includes("친구") || text.includes("친해") || text.includes("베프") || text.includes("일촌") || text.includes("연락") || text.includes("칭긔") ||  text.includes("칭구") ||  text.includes("놀자")) type = "friend";
     else if (text.includes("사랑") || text.includes("좋아") || text.includes("사귀자") || text.includes("내꺼") || text.includes("결혼")) type = "love";
     else if (text.includes("힘들") || text.includes("슬퍼") || text.includes("우울") || text.includes("눈물")) type = "sad";
 
