@@ -165,7 +165,7 @@ body {
 
 .content-area {
   flex-grow: 1;
-  display: flex;           
+  display: flex;            
   flex-direction: column;  
   overflow: hidden; 
   height: 100%;    
@@ -195,10 +195,10 @@ body {
 }
 
 .scroll-list {
-  flex-grow: 1;           
-  overflow-y: auto;       
-  padding-right: 5px;     
-  min-height: 0;          
+  flex-grow: 1;            
+  overflow-y: auto;        
+  padding-right: 5px;      
+  min-height: 0;           
   scrollbar-width: thin;
   scrollbar-color: #8cc6d1 #f1f1f1;
 }
@@ -207,12 +207,12 @@ body {
 .scroll-list::-webkit-scrollbar-track { background: #f1f1f1; }
 
 .input-wrapper {
-  flex-shrink: 0;         
+  flex-shrink: 0;          
   margin-top: 10px;
   border-top: 2px solid #eee;
   padding-top: 10px;
   background: white;
-  z-index: 10;           
+  z-index: 10;            
 }
 
 .guestbook-entry {
@@ -469,7 +469,48 @@ input.comment-input {
           </div>
         </div>
       </div>
+      
+      <div id="hints" class="content-area scroll-list" style="display:none;">
+        <div style="border-bottom:1px solid #ccc; padding-bottom:5px; margin-bottom:10px; color:#3b5998; font-weight:bold; flex-shrink: 0;">
+          키워드 힌트 (Keywords)
+        </div>
+        <div class="home-content">
+          <div class="home-section">
+            <span class="home-title">① 공통 키워드 (All Members)</span>
+            <ul style="padding-left: 20px; margin: 5px 0;">
+              <li><b>Normal:</b> 평범한 인사 (안녕, 반가워 등)</li>
+              <li><b>Love:</b> <span style="color:#ff6600">사랑, 칭찬, 플러팅, 주접</span> (3~4개)</li>
+              <li><b>Sad:</b> 슬픔, 우울, 지침, 울고싶다 (3~4개)</li>
+              <li><b>Rumor:</b> 소문, 실망, 들었어, 봤어 (3~5개)</li>
+              <li><b>Friend:</b> 친구, 우정, 일촌, 베프 (3~5개)</li>
+              <li><b>Doing:</b> 뭐해?, 뭐함?, 지금 뭐해 (3~5개)</li>
+              <li><b>Special:</b> 여친있어?, 생일축하해 (각 1개)</li>
+            </ul>
+          </div>
 
+          <div class="home-section">
+            <span class="home-title">② 멤버별 이스터에그 (Hidden)</span>
+            <p style="margin:5px 0; font-size:12px; color:#666;">
+              특정 단어나 이모지를 입력하면 반응합니다!
+            </p>
+            <ul style="padding-left: 20px; margin: 5px 0; line-height: 1.8;">
+              <li><b>박원빈(4):</b> 🎸 / 🐱 / 🤳(사진/셀카) / ⛴(울산)</li>
+              <li><b>송은석(5):</b> 🪨 / 👑(돌자) / 😴(잠) / 얼굴(잘생) / 🤣(개그)</li>
+              <li><b>이소희(5):</b> 🎤 / 🧢 / 📢(득음/고음) / 또리 / 귀여워</li>
+              <li><b>오시온(4):</b> 🍰(디저트) / ☕️ / 📚 / ❤(사랑해)</li>
+              <li><b>백준혁(4):</b> 잘생겼다 / 질투 / 💪 / 📝(공부/시험)</li>
+              <li><b>리쿠(6):</b> 일본어인사 / 귀여워 / 年上(누나) / 고백(스키) / 🐹(햄) / 🍡</li>
+              <li><b>안건호(4):</b> 🎹 / 🎶(연주) / 📆(데이트) / 😛(바보)</li>
+            </ul>
+          </div>
+
+          <div class="home-section" style="text-align:center;">
+            <span class="home-title">Made by.</span>
+            <p><b>Insta:</b> @jpn.boys</p>
+            <p><b>Twitter:</b> @stella725513297</p>
+          </div>
+        </div>
+      </div> 
       <div id="guestbook" class="content-area" style="display:none;">
         <div style="border-bottom:1px solid #ccc; padding-bottom:5px; margin-bottom:10px; color:#3b5998; font-weight:bold; flex-shrink: 0;">
           방명록 (Guestbook)
@@ -492,7 +533,7 @@ input.comment-input {
 
   <div class="menu-container">
     <div id="tab-home" class="menu-tab active" onclick="showTab('home')">홈</div>
-    <div class="menu-tab" onclick="showAlert('준비중입Ꮮㅣ㉰')">프로필</div>
+    <div id="tab-hints" class="menu-tab" onclick="showTab('hints')">힌트</div>
     <div class="menu-tab" onclick="showAlert('준비중입Ꮮㅣ㉰')">다이어리</div>
     <div id="tab-photos" class="menu-tab" onclick="showTab('photos')">사진첩</div>
     <div id="tab-guestbook" class="menu-tab" onclick="showTab('guestbook')">방명록</div>
@@ -522,28 +563,28 @@ function enterSite() {
     myName = input.value.trim();
   }
   
-  // ▼▼▼ [핵심 수정] 아래 내용들이 추가되어야 데이터가 보입니다! ▼▼▼
-  
   // 1. 프로필 이미지와 소개글 연결
   document.getElementById("profile-img").src = currentMember.img;
   document.getElementById("profile-desc").innerText = currentMember.desc;
   
   // 2. BGM 제목 표시 및 오디오 소스 연결
-  document.getElementById("bgm-title").innerText = "♬ " + currentMember.bgm.title;
+  document.getElementById("bgm-title").innerHTML = `
+  <marquee scrollamount="3" style="width:100%">
+    ‥‥*☆* ♬ ${currentMember.bgm.title} *☆*‥‥
+  </marquee>
+`;
   const bgm = document.getElementById("bgm");
-  bgm.src = currentMember.bgm.src; // 오디오 파일 경로 설정 필수!
+  bgm.src = currentMember.bgm.src; 
 
   // 3. 사진첩 목록 렌더링 실행
   renderPhotos(currentMember.photos);
-
-  // ▲▲▲ [수정 끝] ▲▲▲
 
   // 입장 모달 숨기기
   document.getElementById('entry-modal').style.display = 'none';
   // 메인 화면 표시
   document.getElementById('main-wrapper').style.visibility = 'visible';
   
-  // BGM 재생 시도 (소스가 연결되었으므로 이제 소리가 날 거예요)
+  // BGM 재생 시도
   bgm.volume = 0.5;
   bgm.play().catch(error => {
     console.log("Auto-play blocked by browser policy");
@@ -594,7 +635,6 @@ function triggerIlchonRequest() {
 }
 
 function acceptIlchon() {
-  // ★ 알림창도 showAlert로 변경
   showAlert(`[${currentMember.name}] 님과 일촌이 되었습니다!\n\n일촌명: ${myName} ❤️ ${currentMember.name}`);
   closeModal('ilchon-modal');
   
@@ -640,7 +680,6 @@ function foundAcorn(id) {
       if(!bgm.paused) bgm.volume = 1.0; 
     }, 300);
   } else {
-    // ★ 알림창도 showAlert로 변경
     showAlert(`도토己I를 찾았다! (${foundCount}/3)\n남은 도토己I가 나올 때까지 기다려보세요!`);
   }
 }
@@ -649,6 +688,7 @@ function showTab(name){
   document.querySelectorAll('.menu-tab').forEach(t => t.classList.remove('active'));
   
   document.getElementById('home').style.display = (name==='home') ? 'flex' : 'none';
+  document.getElementById('hints').style.display = (name==='hints') ? 'flex' : 'none';
   document.getElementById('guestbook').style.display = (name==='guestbook') ? 'flex' : 'none';
   document.getElementById('photos').style.display = (name==='photos') ? 'flex' : 'none';
   
@@ -668,8 +708,8 @@ const replyTemplates = {
   entp: {
     normal: ["오 왔냐?! 환영한다 ㅋㅋㅋ", "ㅎ2ㅎ2", "심심했는데 잘 왔다 ㅋㅋ", "너 기다리고 있었다 ㅋ 이제 오냐?"],
     love: ["나 인기 많은 거 알지? 줄 서라 ㅋㅋ", "역시는 역시네 사람 볼 줄 아네", "반했냐? ㅋㅋㅋ"],
-    sad: ["야 누가 괴롭힘? 이름 대라", "술 한잔 고? 내가 쏜다", "훌훌 털어버려 인생 뭐 있냐!"],
-    rumor: ["내가 좀 핫하긴 하지? ㅋㅋ", "누구랑? 예쁘냐? 소개 좀 ㅋㅋ", "소설 쓰네 베스트셀러 감이다", "질투하냐? ㅋㅋ"],
+    sad: ["야 누가 괴롭힘? 이름 대라", "피방 고? 내가 쏜다", "훌훌 털어버려 인생 뭐 있냐!"],
+    rumor: ["내가 좀 핫하긴 하지? ㅋㅋ", "내가? 누구랑? ㅋㅋ", "소설 쓰네 베스트셀러 감이다", "질투하냐? ㅋㅋ"],
     doing: ["거울 보는 중ㅋ", "나 지금 피시방임. 스타 한 판 뜨는 중인데 질 것 같다.. ㅡㅡ", "니 생각? ㅋㅋㅋ 농담이고 폰 만지는 중", "라면 끓이는 중. 한 입만 달라고 하지 마라 ㅋ"],
     friend: ["당연히 콜이지!", "오늘부터 베프 고고?", "일촌명은 '준혁이꼬봉' 어때? 농담 ㅋ", "번호 찍어라 밥 사줌"]
   },
@@ -682,12 +722,12 @@ const replyTemplates = {
     friend: ["음.. 생각 좀 해보고", "친해지면 받아줌", "일단 일촌 신청해 놔 ㅋㅋ"]
   },
   cool_playful: {
-    normal: ["안녕~ 근데 빈손이야?ㅋㅋ", `?ㅏㄴㅕ
- ㄴ    ?`, "나 지금 너한테 답글 남기는 중이지ㅋㅋ", "왔으면 발도장 꾹! ㅋㅋ", "ㅋㅋㅋ 반갑다"],
+    normal: ["안녕~ 근데 빈손이야?ㅋㅋ", `ㅇㅏㄴㅕ
+ ㄴ    ㅇ`, "왔으면 발도장 꾹! ㅋㅋ", "ㅋㅋㅋ 반갑다"],
     love: ["오~ 감당 가능? ㅋㅋ", "장난치지 마라~ 설렌다?", "ㅋㅋㅋ 귀엽네"],
     sad: ["에이 왜 우울해~ 웃자", "무슨 일인데? 들어는 줄게", "심각해지지 말자~"],
     rumor: ["비밀인데 어떻게 알았대?", "에이~ 설마~", "너 나 질투해? ㅋㅋ", "글쎄다~?"],
-    doing: ["악보 보는 중.. 머리 아픈데 멋있어 보이려나? ㅋ", "너 기다리고 있었지 (는 뻥이야ㅋ)", "학원 갈 준비 중;; 귀찮네~", "비밀인데. 궁금해? 궁금하면 500원 ㅋㅋ"],
+    doing: ["악보 보는 중.. 머리 아픈데 멋있어 보이려나? ㅋ", "나 지금 너한테 답글 남기는 중이지ㅋㅋ", "너 기다리고 있었지 (는 뻥이야ㅋ)", "학원 갈 준비 중;; 귀찮네~", "비밀인데. 궁금해? 궁금하면 500원 ㅋㅋ"],
     friend: ["일촌? 맛있는 거 사주면 ㅋㅋ", "콜! 대신 자주 와라", "너 하는 거 봐서~ ㅋㅋ", "오냐 받아줌", `
     ●  한!
 ☜=━╋┓턱!
@@ -720,7 +760,7 @@ const replyTemplates = {
 ＼＼＼★★＼＼＼
 행운의 브๐ㅣV`],
     rumor: ["오잉ㅋㅋ?", "소문은 소문일 뿐 오해하지 말자~", "쉿, 국가 기밀임", "내가 좀 잘생긴 죄가 크지"],
-    doing: ["눈 깜빡이는 중", "광합성 중.. 햇빛이 따뜻하네..", "돌멩이가 뭘 하겠냐. 그냥 굴러다니지.", "지금 돌멩이 관찰 중.. 얘는 왜 이렇게 생겼을까?",],
+    doing: ["눈 깜빡이는 중", "광합성 중.. 햇빛이 따뜻하네..", "돌멩이가 뭘 하겠냐. 그냥 굴러다니지.", "지금 돌멩이 관찰 중.. 얘는 왜 이렇게 생겼을까?"],
     friend: ["일촌? 이촌은 안 되나 ㅋㅋ", "나랑 친구하려면 돌씨로 성을 바꿔야하는데 괜찮겠니? (농담임ㅋ)", "친구비 입금해 500원", "그래 친구 하자", "돌멩이 추가요"]
   }
 };
@@ -820,7 +860,7 @@ const members = [
 교복이란 죄수복을 입고
 공부란 벌을 받고
 졸업이란 석방을 기다린다`, hearts: 2320 },
-         { img: "jun5.png", text: `어떨진 몰라
+          { img: "jun5.png", text: `어떨진 몰라
 어쩔진 몰라
 
 손이가는데로
@@ -1075,12 +1115,6 @@ Coldy한 나
 const currentMember = members[Math.floor(Math.random() * members.length)];
 
 window.onload = () => {
-  // ★ 페이지 로드 시에는 오직 기본 데이터만 세팅 (모달, 음악, 사진 로딩 금지) ★
-  // document.getElementById("profile-img").src = currentMember.img; <-- 삭제됨
-  // renderPhotos(currentMember.photos); <-- 삭제됨
-  // 위 작업들은 enterSite()에서 수행해야 흐름이 맞습니다.
-  
-  // 하지만 사용자 편의를 위해 "입장 전"에도 이름은 세팅해두면 좋습니다.
   document.getElementById("member-name").innerText = currentMember.name + "의 미니홈피";
 };
 
@@ -1259,6 +1293,3 @@ window.addEventListener("click", () => {
 </script>
 </body>
 </html>
-
-
-
