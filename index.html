@@ -224,11 +224,12 @@ body {
   font-size: 13px; 
 }
 .ai-reply {
-  color:#ff6600;
-  margin-top:4px;
-  border-top:1px dotted #ccc;
-  padding-top:4px;
-  font-size: 12px; 
+  background: #fff;
+  padding: 5px;
+  border: 1px solid #eee;
+  margin-top: 5px;
+  font-size: 12px;
+  color: #333;
 }
 textarea {
   width:100%;
@@ -1312,9 +1313,9 @@ function postMsg() {
     else if (text.includes("힘들") || text.includes("슬퍼") || text.includes("슬픔") || text.includes("지쳐") || text.includes("울고") || text.includes("흑흑") || text.includes("엉엉") || text.includes("우울") || text.includes("눈물")) type = "sad";
 
     const replyPool = currentMember.replies[type] || currentMember.replies['normal'];
-    const reply = replyPool[Math.floor(Math.random() * replyPool.length)];
+  const reply = replyPool[Math.floor(Math.random() * replyPool.length)];
     
-    document.getElementById(id).innerText = `ㄴ ${currentMember.name}: ${reply}`;
+    document.getElementById(id).innerHTML = `<span style="color:#ff6600; font-weight:bold;">ㄴ ${currentMember.name}:</span> ${reply}`;
   }, 1000);
 }
 
@@ -1354,4 +1355,5 @@ function renderInitialGuestbook() {
 </script>
 </body>
 </html>
+
 
